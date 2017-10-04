@@ -24,9 +24,6 @@ public class Invader_GUI {
     
 	
 	public Invader_GUI() {
-		//int startX = WIDTH / 2;
-		//int startY = (7/8)*HEIGHT;
-		//player = new Player(startX,startY,1,0,RIGHT);
 		String gameTitle = "Duck Invaders";
 		frame = new JFrame(gameTitle);
 		frame.setSize(WIDTH, HEIGHT);
@@ -37,7 +34,12 @@ public class Invader_GUI {
         gameContentPane = frame.getContentPane();
         gameContentPane.setLayout(null); // not need layout, will use absolute system
         gameContentPane.setBackground(Color.gray);
-
+        
+        
+		int startX = WIDTH / 2;
+		int startY = (int)(((double)6/8)*HEIGHT);
+		player = new Player(frame,startX,startY,1,0,RIGHT);
+		player.draw();
 	}
 	
 	public static void main(String[] args) {
