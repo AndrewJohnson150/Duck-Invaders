@@ -36,3 +36,8 @@ Implement:
  * 1
 * [ ] levels/waves
  * 2
+ 
+ 
+## Additional Issues
+
+* remove delay in arrow key press
