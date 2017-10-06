@@ -1,13 +1,15 @@
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Invader_GUI extends TimerTask{
+public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final long serialVersionUID = 1L;
 	private JPanel myContent;
 	private Container gameContentPane;
@@ -24,7 +26,7 @@ public class Invader_GUI extends TimerTask{
 	private JFrame frame;
 	private Player player;
     
-	private static final int GAME_PACE = 350;
+	private static final int GAME_PACE = 500;
 	private Timer gameTimer;
 	
 	public Invader_GUI() {
@@ -38,7 +40,8 @@ public class Invader_GUI extends TimerTask{
         gameContentPane = frame.getContentPane();
         gameContentPane.setLayout(null); // not need layout, will use absolute system
         gameContentPane.setBackground(Color.gray);
-        
+        frame.addKeyListener(this);
+        frame.setResizable(false);
         
 		int startX = WIDTH / 2;
 		int startY = (int)(((double)6/8)*HEIGHT);
@@ -51,11 +54,21 @@ public class Invader_GUI extends TimerTask{
 	
 	public static void main(String[] args) {
 		Invader_GUI myGame = new Invader_GUI();
-
 	}
 	
 	public void run() {
 		
 	}
+
+	@Override
+	public void keyPressed(KeyEvent key) {
+		player.move(key,WIDTH);	
+	}
+
+	@Override
+	public void keyReleased(KeyEvent ignore) {}
+
+	@Override
+	public void keyTyped(KeyEvent ignore) {}
 
 }

@@ -1,3 +1,5 @@
+import java.awt.event.KeyEvent;
+
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -31,6 +33,14 @@ public class Player implements ItemInterface {
 	    playerImage = new ImageIcon ("playerImage.png");
 	}
 	
+	/*public int imageWidth() {
+		return playerImage.getIconWidth();
+	}
+	
+	public int imageHeight() {
+		return playerImage.getIconHeight();
+	}*/
+	
 	public int getX() {
 		return xPos;
 	}
@@ -59,7 +69,22 @@ public class Player implements ItemInterface {
 		health--;
 	}
 	
-	public void move() {
+	public void move(KeyEvent e, int screenWidth) {
+		int xBoundR = (screenWidth - playerImage.getIconWidth());
+		int xBoundL = 0;
+		
+			
+		if (xPos >=  xBoundL && e.getKeyCode() == (KeyEvent.VK_LEFT) ) {
+			xPos -= 10;
+		}
+
+		if (xPos <= xBoundR && e.getKeyCode() == (KeyEvent.VK_RIGHT) ) {
+			xPos += 10;
+		}
+		
+		draw();
+		
+		/*
 		if (direction==UP) {
 			yPos+=velocity;
 		}
@@ -72,6 +97,7 @@ public class Player implements ItemInterface {
 		else if (direction==RIGHT) {
 			xPos+=velocity;
 		}
+		*/
 	}
 	
     protected void draw(){ 
@@ -82,7 +108,7 @@ public class Player implements ItemInterface {
     
     protected void erase(){
         playerJLabel.setVisible(false);
-    }   
+    }
 	
 
 }
