@@ -1,11 +1,13 @@
 
 import java.awt.Color;
 import java.awt.Container;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Invader_GUI {
+public class Invader_GUI extends TimerTask{
 	private static final long serialVersionUID = 1L;
 	private JPanel myContent;
 	private Container gameContentPane;
@@ -22,6 +24,8 @@ public class Invader_GUI {
 	private JFrame frame;
 	private Player player;
     
+	private static final int GAME_PACE = 350;
+	private Timer gameTimer;
 	
 	public Invader_GUI() {
 		String gameTitle = "Duck Invaders";
@@ -40,11 +44,18 @@ public class Invader_GUI {
 		int startY = (int)(((double)6/8)*HEIGHT);
 		player = new Player(frame,startX,startY,1,0,RIGHT);
 		player.draw();
+		
+		gameTimer = new java.util.Timer();
+		gameTimer.schedule(this, 0, GAME_PACE);
 	}
 	
 	public static void main(String[] args) {
 		Invader_GUI myGame = new Invader_GUI();
 
+	}
+	
+	public void run() {
+		
 	}
 
 }
