@@ -22,8 +22,8 @@ public class EnemyGroup {
 			for (int j = 0; j<enemies[i].length;j++) {
 				enemies[i][j] = new Enemy(frame,0,0,eHealth,eVelocity,Invader_GUI.RIGHT);
 				
-				int enemyX = enemies[i][j].imageWidth()*i; //will need work but good for immediate use
-				int enemyY = enemies[i][j].imageHeight()*j;
+				int enemyX = enemies[i][j].imageWidth()*i + 10*i; //will need work but good for immediate use
+				int enemyY = enemies[i][j].imageHeight()*j + 10*j;
 				
 				enemies[i][j].setX(enemyX);
 				enemies[i][j].setY(enemyY);
@@ -74,7 +74,7 @@ public class EnemyGroup {
 	
 	public void checkCollision() {
 		//implement later
-		// for testing purpose right
+		// for testing purpose
 		
 		enemies[1][1].loseHealth();
 		if (enemies[1][1].getHealth()==0) {

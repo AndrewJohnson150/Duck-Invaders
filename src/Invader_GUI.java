@@ -23,6 +23,10 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int LEFT = 2;
 	public static final int RIGHT = 3;
 	
+	private boolean released = false; //for key presses
+	private boolean canShoot = true;
+	private int bulletTimer = 0;
+	
 	private final int WIDTH = 900;
 	private final int HEIGHT = 900;
 	private final int gameWindowX = 100;
@@ -30,11 +34,13 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private JFrame frame;
 	private Player player;
 	private EnemyGroup ducks;
+	private BulletManager playerBullets;
     
 	public static final int NUM_ROW = 3;
 	public static final int NUM_COL = 5;
 	public static final int ENEMY_HEALTH = 1;
-	public static final int ENEMY_VELOCITY = 8;
+	public static final int ENEMY_VELOCITY = 10;
+	public static final int BULLET_VELOCITY = 10;
 	
 	private static final int GAME_PACE = 50;
 	private Timer gameTimer;
@@ -60,6 +66,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 		ducks = new EnemyGroup(frame, WIDTH, NUM_COL, NUM_ROW, ENEMY_VELOCITY, ENEMY_HEALTH);
 		
+		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
+		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);
 	}
@@ -70,19 +78,37 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	public void run() {
 		ducks.move();
+		playerBullets.move();
+		
+		if (!canShoot)
+			bulletTimer += GAME_PACE;
+		if (bulletTimer > 500) {
+			bulletTimer = 0;
+			canShoot = true;
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent key) {
+		if (released && key.getKeyCode()==KeyEvent.VK_SPACE && canShoot) {
+			playerBullets.shoot(player);
+			canShoot = false;
+		}
+		released = false;
 		player.move(key,WIDTH);	
 	}
 
 	@Override
-	public void keyReleased(KeyEvent ignore) {}
+	public void keyReleased(KeyEvent ignore) {
+		released = true;
+	}
 
 	@Override
-	public void keyTyped(KeyEvent ignore) {}
+	public void keyTyped(KeyEvent key) {
+	}
 	
+	
+	//https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
 	public static Image getScaledImage(Image srcImg, int w, int h){
 	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D g2 = resizedImg.createGraphics();
