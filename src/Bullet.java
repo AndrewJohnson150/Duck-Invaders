@@ -16,10 +16,9 @@ public class Bullet implements ItemInterface {
 	private JLabel bulletJLabel;
 	private JFrame bulletJFrame;
 	
-	public Bullet(JFrame passedInJFrame, int startX, int startY, int vel) {
-		xPos = startX;
-		yPos = startY;
+	public Bullet(JFrame passedInJFrame, Player p,  int vel) {
 		velocity = vel;
+		
 		
 		bulletJFrame = passedInJFrame;
 	    bulletJLabel = new JLabel();
@@ -29,8 +28,18 @@ public class Bullet implements ItemInterface {
 	    bulletJLabel.setVisible(true);
 	    
 	    bulletImage = new ImageIcon ("Images/bullet.png"); //change
-	    Image i = Invader_GUI.getScaledImage(bulletImage.getImage(), 50, 50);
+	    Image i = Invader_GUI.getScaledImage(bulletImage.getImage(), 10, 50);
 	    bulletImage = new ImageIcon(i);
+		xPos = p.getX()+p.imageWidth()/2 - imageWidth()/2;
+		yPos = p.getY();
+	}
+	
+	public int imageWidth() {
+		return bulletImage.getIconWidth();
+	}
+
+	public int imageHeight() {
+		return bulletImage.getIconHeight();
 	}
 	
 	public int getX() {

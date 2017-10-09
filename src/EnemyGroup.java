@@ -76,10 +76,10 @@ public class EnemyGroup {
 		//implement later
 		// for testing purpose
 		
-		enemies[1][1].loseHealth();
-		if (enemies[1][1].getHealth()==0) {
-			enemies[1][1].erase();
-			enemyAlive[1][1] = false;		}
+		enemies[5][4].loseHealth();
+		if (enemies[5][4].getHealth()==0) {
+			enemies[5][4].erase();
+			enemyAlive[5][4] = false;		}
 	}
 	
 	public int getFurthestRight() {

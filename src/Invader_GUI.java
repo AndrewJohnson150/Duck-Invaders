@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
@@ -22,17 +23,19 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int DOWN = 1;
 	public static final int LEFT = 2;
 	public static final int RIGHT = 3;
-	public static final int WIDTH = 900;
-	public static final int HEIGHT = 900;
+	public static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+	public static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-	private static final int BULLET_VELOCITY = 10;	
-	private static final int NUM_STARTING_ROWS = 3;
-	private static final int NUM_STARTING_COLS = 5;
+	private static final int BULLET_VELOCITY = WIDTH/100;	
+	private static final int BULLET_TIMER = 500;	
+	private static final int ENEMY_TIMER = 500;	
+	private static final int NUM_STARTING_ROWS = 7;
+	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
 	private static final int ENEMY_HEALTH = 1;
-	private static final int ENEMY_VELOCITY = 10;
+	private static final int ENEMY_VELOCITY = WIDTH/200;
 	private static final int GAME_PACE = 50;
-	private static final int gameWindowX = 100;
-	private static final int gameWindowY = 100;
+	private static final int gameWindowX = 0;
+	private static final int gameWindowY = 0;
 	
 	public static void main(String[] args) {
 		Invader_GUI myGame = new Invader_GUI();
@@ -52,6 +55,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	private boolean canShoot = true;
 	private int bulletTimer = 0;
+	private int enemyTimer = ENEMY_TIMER;
 	private boolean spacePressed = false;
 	private boolean arrowPressed = false;
 	private KeyEvent lastArrowPressed = null;
@@ -78,7 +82,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
         frame.setResizable(false);
         
 		int startX = WIDTH / 2;
-		int startY = (int)(((double)6/8)*HEIGHT);
+		int startY = (int)(((double)9/10)*HEIGHT);
 		player = new Player(frame,startX,startY,1,10,RIGHT);
 		player.draw();
 		
@@ -93,7 +97,12 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 	
 	public void run() {
-		ducks.move();
+		enemyTimer += GAME_PACE;
+		if (enemyTimer > ENEMY_TIMER) {
+			enemyTimer = 0;
+			ducks.move();
+		}
+		
 		playerBullets.move();
 		
 		if (spacePressed && canShoot) {
@@ -105,9 +114,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		}
 			
 		
+
+		
 		if (!canShoot)
 			bulletTimer += GAME_PACE;
-		if (bulletTimer > 500) {
+		if (bulletTimer > BULLET_TIMER) {
 			bulletTimer = 0;
 			canShoot = true;
 		}

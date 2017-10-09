@@ -36,6 +36,14 @@ public class Player implements ItemInterface {
 	    playerImage = new ImageIcon(i);
 	}
 	
+	public int imageWidth() {
+		return playerImage.getIconWidth();
+	}
+
+	public int imageHeight() {
+		return playerImage.getIconHeight();
+	}
+	
 	public int getX() {
 		return xPos;
 	}
