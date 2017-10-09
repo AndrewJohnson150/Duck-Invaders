@@ -105,19 +105,28 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 			canShoot = false;
 			spacePressed = true;
 		}
-		else if (key.getKeyCode() == KeyEvent.VK_RIGHT ) {
-			arrowPressed = true;
-			lastArrowPressed = key;
-	    } else if (key.getKeyCode() == KeyEvent.VK_LEFT ) {
-	    	arrowPressed = true;
-	    	lastArrowPressed = key;
-	    } else if (key.getKeyCode() == KeyEvent.VK_UP ) {
-	    	arrowPressed = true;
-	    	lastArrowPressed = key;
-	    } else if (key.getKeyCode() == KeyEvent.VK_DOWN ) {
-	    	arrowPressed = true;
-	    	lastArrowPressed = key;
-	    }
+		else switch (key.getKeyCode()) { //do the same thing no matter which arrow key. Better way??
+			
+			case (KeyEvent.VK_RIGHT):
+				arrowPressed = true;
+				lastArrowPressed = key;
+				break;
+			
+			case (KeyEvent.VK_LEFT):
+		    	arrowPressed = true;
+		    	lastArrowPressed = key;
+		    	break;
+	    	
+	    	case (KeyEvent.VK_UP): 
+		    	arrowPressed = true;
+		    	lastArrowPressed = key;
+		    	break;
+		    	
+	    	case (KeyEvent.VK_DOWN): 
+		    	arrowPressed = true;
+		    	lastArrowPressed = key;
+		    	break;
+		}
 			
 		
 		if (!arrowPressed) {
