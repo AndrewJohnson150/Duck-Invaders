@@ -50,6 +50,8 @@ public class EnemyGroup {
 		}
 		
 		moveAll();
+		//for testing
+		getFurthestDown();
 
 	}
 	
@@ -76,11 +78,11 @@ public class EnemyGroup {
 		//implement later
 		// for testing purpose
 		
-		enemies[5][4].loseHealth();
-		if (enemies[5][4].getHealth()==0) {
-			enemies[5][4].erase();
-			enemyAlive[5][4] = false;		}
-	}
+/*		enemies[11][3].loseHealth();
+		if (enemies[11][3].getHealth()==0) {
+			enemies[11][3].erase();
+			enemyAlive[11][3] = false;		}
+*/	}
 	
 	public int getFurthestRight() {
 		for (int i = enemyAlive.length-1; i>0 ;i--) {
@@ -102,6 +104,19 @@ public class EnemyGroup {
 			}
 		}
 		return 0;	
+	}
+	
+	public int getFurthestDown() {
+		for (int i = enemyAlive.length-1; i>0;i++) {
+			int counter = 0;
+			for (int j = enemyAlive[counter].length-1; j>0 ;j++) {
+				if (enemyAlive[i][j]) {
+					//System.out.println(i +" "+ j);
+					return i;
+				}
+			}
+		}
+		return 0;
 	}
 
 }

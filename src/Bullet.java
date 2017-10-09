@@ -30,7 +30,7 @@ public class Bullet implements ItemInterface {
 	    bulletImage = new ImageIcon ("Images/bullet.png"); //change
 	    Image i = Invader_GUI.getScaledImage(bulletImage.getImage(), 10, 50);
 	    bulletImage = new ImageIcon(i);
-		xPos = p.getX()+p.imageWidth()/2 - imageWidth()/2;
+		xPos = p.getX()+ p.imageWidth()/2 - imageWidth()/2;
 		yPos = p.getY();
 	}
 	

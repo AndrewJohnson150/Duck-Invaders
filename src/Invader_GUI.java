@@ -29,7 +29,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int BULLET_VELOCITY = WIDTH/100;	
 	private static final int BULLET_TIMER = 500;	
 	private static final int ENEMY_TIMER = 500;	
-	private static final int NUM_STARTING_ROWS = 7;
+	private static final int NUM_STARTING_ROWS = 2;
 	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
 	private static final int ENEMY_HEALTH = 1;
 	private static final int ENEMY_VELOCITY = WIDTH/200;
@@ -112,8 +112,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		if (arrowPressed) {
 			player.move(lastArrowPressed, WIDTH);
 		}
-			
-		
 
 		
 		if (!canShoot)
@@ -159,5 +157,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent key) {
+	}
+	
+	private void winOrLose() {
+		ducks.getFurthestDown();
 	}
 }
