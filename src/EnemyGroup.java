@@ -118,5 +118,10 @@ public class EnemyGroup {
 		}
 		return 0;
 	}
-
+	
+	public int furthestDownPos() {
+		int downEnemyEdge = enemies[getFurthestDown()][0].getY() + enemies[getFurthestDown()][0].imageHeight();
+		System.out.println(downEnemyEdge);
+		return downEnemyEdge;
+	}
 }
