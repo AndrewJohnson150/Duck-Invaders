@@ -25,8 +25,14 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private final int gameWindowY = 100;
 	private JFrame frame;
 	private Player player;
+	private EnemyGroup ducks;
     
-	private static final int GAME_PACE = 500;
+	public static final int NUM_ROW = 3;
+	public static final int NUM_COL = 5;
+	public static final int ENEMY_HEALTH = 1;
+	public static final int ENEMY_VELOCITY = 8;
+	
+	private static final int GAME_PACE = 100;
 	private Timer gameTimer;
 	
 	public Invader_GUI() {
@@ -45,8 +51,10 @@ public class Invader_GUI extends TimerTask implements KeyListener{
         
 		int startX = WIDTH / 2;
 		int startY = (int)(((double)6/8)*HEIGHT);
-		player = new Player(frame,startX,startY,1,0,RIGHT);
+		player = new Player(frame,startX,startY,1,10,RIGHT);
 		player.draw();
+		
+		ducks = new EnemyGroup(frame, WIDTH, NUM_COL, NUM_ROW, ENEMY_VELOCITY, ENEMY_HEALTH);
 		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);
@@ -57,7 +65,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	public void run() {
-		
+		ducks.move();
 	}
 
 	@Override

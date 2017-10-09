@@ -33,14 +33,6 @@ public class Player implements ItemInterface {
 	    playerImage = new ImageIcon ("playerImage.png");
 	}
 	
-	/*public int imageWidth() {
-		return playerImage.getIconWidth();
-	}
-	
-	public int imageHeight() {
-		return playerImage.getIconHeight();
-	}*/
-	
 	public int getX() {
 		return xPos;
 	}
@@ -75,29 +67,15 @@ public class Player implements ItemInterface {
 		
 			
 		if (xPos >=  xBoundL && e.getKeyCode() == (KeyEvent.VK_LEFT) ) {
-			xPos -= 10;
+			xPos -= velocity;
 		}
 
 		if (xPos <= xBoundR && e.getKeyCode() == (KeyEvent.VK_RIGHT) ) {
-			xPos += 10;
+			xPos += velocity;
 		}
 		
 		draw();
 		
-		/*
-		if (direction==UP) {
-			yPos+=velocity;
-		}
-		else if (direction==DOWN) {
-			yPos-=velocity;
-		}
-		else if (direction==LEFT) {
-			xPos-=velocity;
-		}
-		else if (direction==RIGHT) {
-			xPos+=velocity;
-		}
-		*/
 	}
 	
     protected void draw(){ 
