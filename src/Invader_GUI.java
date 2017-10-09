@@ -23,9 +23,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int LEFT = 2;
 	public static final int RIGHT = 3;
 	
-	private boolean released = false; //for key presses
 	private boolean canShoot = true;
 	private int bulletTimer = 0;
+	private boolean spacePressed = false;
+	private boolean arrowPressed = false;
+	private KeyEvent lastArrowPressed = null;
 	
 	private final int WIDTH = 900;
 	private final int HEIGHT = 900;
@@ -79,6 +81,14 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public void run() {
 		ducks.move();
 		playerBullets.move();
+		if (spacePressed && canShoot) {
+			playerBullets.shoot(player);
+			canShoot = false;
+		}
+		if (arrowPressed) {
+			player.move(lastArrowPressed, WIDTH);
+		}
+			
 		
 		if (!canShoot)
 			bulletTimer += GAME_PACE;
@@ -90,17 +100,44 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 	@Override
 	public void keyPressed(KeyEvent key) {
-		if (released && key.getKeyCode()==KeyEvent.VK_SPACE && canShoot) {
+		if (key.getKeyCode()==KeyEvent.VK_SPACE && canShoot) {
 			playerBullets.shoot(player);
 			canShoot = false;
+			spacePressed = true;
 		}
-		released = false;
-		player.move(key,WIDTH);	
+		else if (key.getKeyCode() == KeyEvent.VK_RIGHT ) {
+			arrowPressed = true;
+			lastArrowPressed = key;
+	    } else if (key.getKeyCode() == KeyEvent.VK_LEFT ) {
+	    	arrowPressed = true;
+	    	lastArrowPressed = key;
+	    } else if (key.getKeyCode() == KeyEvent.VK_UP ) {
+	    	arrowPressed = true;
+	    	lastArrowPressed = key;
+	    } else if (key.getKeyCode() == KeyEvent.VK_DOWN ) {
+	    	arrowPressed = true;
+	    	lastArrowPressed = key;
+	    }
+			
+		
+		if (!arrowPressed) {
+			player.move(key,WIDTH);	
+		}
 	}
 
 	@Override
-	public void keyReleased(KeyEvent ignore) {
-		released = true;
+	public void keyReleased(KeyEvent key) {
+		if (key.getKeyCode()==KeyEvent.VK_SPACE)
+			spacePressed = false;
+		else if (key.getKeyCode() == KeyEvent.VK_RIGHT ) {
+			arrowPressed = false;
+	    } else if (key.getKeyCode() == KeyEvent.VK_LEFT ) {
+	    	arrowPressed = false;
+	    } else if (key.getKeyCode() == KeyEvent.VK_UP ) {
+	    	arrowPressed = false;
+	    } else if (key.getKeyCode() == KeyEvent.VK_DOWN ) {
+	    	arrowPressed = false;
+	    }
 	}
 
 	@Override
