@@ -22,6 +22,29 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int DOWN = 1;
 	public static final int LEFT = 2;
 	public static final int RIGHT = 3;
+
+	private static final int BULLET_VELOCITY = 10;	
+	private static final int NUM_STARTING_ROWS = 3;
+	private static final int NUM_STARTING_COLS = 5;
+	private static final int ENEMY_HEALTH = 1;
+	private static final int ENEMY_VELOCITY = 10;
+	private static final int GAME_PACE = 50;
+	
+	public static void main(String[] args) {
+		Invader_GUI myGame = new Invader_GUI();
+	}
+	
+	//https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
+	public static Image getScaledImage(Image srcImg, int w, int h){
+	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g2 = resizedImg.createGraphics();
+
+	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    g2.drawImage(srcImg, 0, 0, w, h, null);
+	    g2.dispose();
+
+	    return resizedImg;
+	}
 	
 	private boolean canShoot = true;
 	private int bulletTimer = 0;
@@ -37,14 +60,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private Player player;
 	private EnemyGroup ducks;
 	private BulletManager playerBullets;
-    
-	public static final int NUM_ROW = 3;
-	public static final int NUM_COL = 5;
-	public static final int ENEMY_HEALTH = 1;
-	public static final int ENEMY_VELOCITY = 10;
-	public static final int BULLET_VELOCITY = 10;
-	
-	private static final int GAME_PACE = 50;
 	private Timer gameTimer;
 	
 	public Invader_GUI() {
@@ -66,7 +81,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		player = new Player(frame,startX,startY,1,10,RIGHT);
 		player.draw();
 		
-		ducks = new EnemyGroup(frame, WIDTH, NUM_COL, NUM_ROW, ENEMY_VELOCITY, ENEMY_HEALTH);
+		ducks = new EnemyGroup(frame, WIDTH, NUM_STARTING_COLS, NUM_STARTING_ROWS, ENEMY_VELOCITY, ENEMY_HEALTH);
 		
 		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
 		
@@ -74,9 +89,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		gameTimer.schedule(this, 0, GAME_PACE);
 	}
 	
-	public static void main(String[] args) {
-		Invader_GUI myGame = new Invader_GUI();
-	}
+
 	
 	public void run() {
 		ducks.move();
@@ -105,29 +118,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 			canShoot = false;
 			spacePressed = true;
 		}
-		else switch (key.getKeyCode()) { //do the same thing no matter which arrow key. Better way??
-			
-			case (KeyEvent.VK_RIGHT):
-				arrowPressed = true;
-				lastArrowPressed = key;
-				break;
-			
-			case (KeyEvent.VK_LEFT):
-		    	arrowPressed = true;
-		    	lastArrowPressed = key;
-		    	break;
-	    	
-	    	case (KeyEvent.VK_UP): 
-		    	arrowPressed = true;
-		    	lastArrowPressed = key;
-		    	break;
-		    	
-	    	case (KeyEvent.VK_DOWN): 
-		    	arrowPressed = true;
-		    	lastArrowPressed = key;
-		    	break;
+		
+		else {
+			arrowPressed = true;
+			lastArrowPressed = key;
 		}
-			
 		
 		if (!arrowPressed) {
 			player.move(key,WIDTH);	
@@ -152,18 +147,4 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	@Override
 	public void keyTyped(KeyEvent key) {
 	}
-	
-	
-	//https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
-	public static Image getScaledImage(Image srcImg, int w, int h){
-	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-	    Graphics2D g2 = resizedImg.createGraphics();
-
-	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    g2.drawImage(srcImg, 0, 0, w, h, null);
-	    g2.dispose();
-
-	    return resizedImg;
-	}
-
 }

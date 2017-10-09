@@ -18,7 +18,7 @@ public class BulletManager {
 	}
 	
 	public void hitRegister(int i) {
-		
+		//TODO
 	}
 	
 	public int[][] bulletLocations() {
