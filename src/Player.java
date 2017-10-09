@@ -31,7 +31,7 @@ public class Player implements ItemInterface {
 	    playerJLabel.setVisible(false);
 	    playerJLabel.setVisible(true);
 	    
-	    playerImage = new ImageIcon ("playerImage.png");
+	    playerImage = new ImageIcon ("Images/playerImage.png");
 	    Image i = Invader_GUI.getScaledImage(playerImage.getImage(), 50, 50);
 	    playerImage = new ImageIcon(i);
 	}

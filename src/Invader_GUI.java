@@ -14,14 +14,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Invader_GUI extends TimerTask implements KeyListener{
-	private static final long serialVersionUID = 1L;
-	private JPanel myContent;
+	//private static final long serialVersionUID = 1L;
+	//private JPanel myContent;
 	private Container gameContentPane;
 	
 	public static final int UP = 0;
 	public static final int DOWN = 1;
 	public static final int LEFT = 2;
 	public static final int RIGHT = 3;
+	public static final int WIDTH = 900;
+	public static final int HEIGHT = 900;
 
 	private static final int BULLET_VELOCITY = 10;	
 	private static final int NUM_STARTING_ROWS = 3;
@@ -29,6 +31,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int ENEMY_HEALTH = 1;
 	private static final int ENEMY_VELOCITY = 10;
 	private static final int GAME_PACE = 50;
+	private static final int gameWindowX = 100;
+	private static final int gameWindowY = 100;
 	
 	public static void main(String[] args) {
 		Invader_GUI myGame = new Invader_GUI();
@@ -52,10 +56,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private boolean arrowPressed = false;
 	private KeyEvent lastArrowPressed = null;
 	
-	private final int WIDTH = 900;
-	private final int HEIGHT = 900;
-	private final int gameWindowX = 100;
-	private final int gameWindowY = 100;
+
 	private JFrame frame;
 	private Player player;
 	private EnemyGroup ducks;
@@ -94,6 +95,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public void run() {
 		ducks.move();
 		playerBullets.move();
+		
 		if (spacePressed && canShoot) {
 			playerBullets.shoot(player);
 			canShoot = false;
@@ -119,14 +121,14 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 			spacePressed = true;
 		}
 		
-		else {
+		else if (key.getKeyCode() != KeyEvent.VK_SPACE) {
 			arrowPressed = true;
 			lastArrowPressed = key;
 		}
 		
-		if (!arrowPressed) {
+		/*if (!arrowPressed) {
 			player.move(key,WIDTH);	
-		}
+		}*/
 	}
 
 	@Override

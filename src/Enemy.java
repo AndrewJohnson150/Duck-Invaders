@@ -31,7 +31,7 @@ public class Enemy implements ItemInterface {
 	    enemyJLabel.setVisible(false);
 	    enemyJLabel.setVisible(true);
 	    
-	    enemyImage = new ImageIcon ("playerImage.png"); //change
+	    enemyImage = new ImageIcon ("Images/playerImage.png"); //change
 	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 50, 50);
 	    enemyImage = new ImageIcon(i);
 	}
