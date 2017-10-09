@@ -28,7 +28,7 @@ public class Bullet implements ItemInterface {
 	    bulletJLabel.setVisible(false);
 	    bulletJLabel.setVisible(true);
 	    
-	    bulletImage = new ImageIcon ("Images/playerImage.png"); //change
+	    bulletImage = new ImageIcon ("Images/bullet.png"); //change
 	    Image i = Invader_GUI.getScaledImage(bulletImage.getImage(), 50, 50);
 	    bulletImage = new ImageIcon(i);
 	}
