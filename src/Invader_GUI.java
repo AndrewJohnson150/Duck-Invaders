@@ -1,8 +1,12 @@
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -32,7 +36,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int ENEMY_HEALTH = 1;
 	public static final int ENEMY_VELOCITY = 8;
 	
-	private static final int GAME_PACE = 100;
+	private static final int GAME_PACE = 50;
 	private Timer gameTimer;
 	
 	public Invader_GUI() {
@@ -78,5 +82,16 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent ignore) {}
+	
+	public static Image getScaledImage(Image srcImg, int w, int h){
+	    BufferedImage resizedImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+	    Graphics2D g2 = resizedImg.createGraphics();
+
+	    g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    g2.drawImage(srcImg, 0, 0, w, h, null);
+	    g2.dispose();
+
+	    return resizedImg;
+	}
 
 }

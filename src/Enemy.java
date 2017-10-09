@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -31,6 +32,8 @@ public class Enemy implements ItemInterface {
 	    enemyJLabel.setVisible(true);
 	    
 	    enemyImage = new ImageIcon ("playerImage.png"); //change
+	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 50, 50);
+	    enemyImage = new ImageIcon(i);
 	}
 	
 	public int imageWidth() {
@@ -74,7 +77,7 @@ public class Enemy implements ItemInterface {
 	}
 	
 	public void goDown() {
-		yPos+=50; //we should change this
+		yPos+=5*velocity; //might want to change
 	}
 	
 	public void move() {

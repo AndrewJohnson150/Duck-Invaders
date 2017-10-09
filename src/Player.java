@@ -1,3 +1,4 @@
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
@@ -31,6 +32,8 @@ public class Player implements ItemInterface {
 	    playerJLabel.setVisible(true);
 	    
 	    playerImage = new ImageIcon ("playerImage.png");
+	    Image i = Invader_GUI.getScaledImage(playerImage.getImage(), 50, 50);
+	    playerImage = new ImageIcon(i);
 	}
 	
 	public int getX() {
