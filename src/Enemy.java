@@ -31,11 +31,24 @@ public class Enemy implements ItemInterface {
 	    enemyJLabel.setVisible(false);
 	    enemyJLabel.setVisible(true);
 	    
-	    enemyImage = new ImageIcon ("Images/playerImage.png"); //change
-	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 50, 50);
-	    enemyImage = new ImageIcon(i);
+	    setImage();
+	   /* enemyImage = new ImageIcon ("Images/duck1.png"); //change
+	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 75, 75);
+	    enemyImage = new ImageIcon(i);*/
 	}
 	
+	private void setImage() {
+		if(direction == RIGHT) {
+		 	enemyImage = new ImageIcon ("Images/duck1.png"); //change
+		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 75, 75);
+		    enemyImage = new ImageIcon(i);
+		}
+		else {
+			enemyImage = new ImageIcon ("Images/duck2.png"); //change
+		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 75, 75);
+		    enemyImage = new ImageIcon(i);
+		}
+	}
 	public int imageWidth() {
 		return enemyImage.getIconWidth();
 	}
@@ -95,6 +108,7 @@ public class Enemy implements ItemInterface {
         enemyJLabel.setIcon(enemyImage);
         enemyJLabel.setBounds(xPos,yPos,enemyImage.getIconWidth(),enemyImage.getIconHeight());  
         enemyJLabel.setVisible(true);
+        setImage();
     }
     
     protected void erase(){
