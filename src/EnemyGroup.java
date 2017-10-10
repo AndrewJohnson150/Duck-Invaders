@@ -22,8 +22,8 @@ public class EnemyGroup {
 			for (int j = 0; j<enemies[i].length;j++) {
 				enemies[i][j] = new Enemy(frame,0,0,eHealth,eVelocity,Invader_GUI.RIGHT);
 				
-				int enemyX = enemies[i][j].imageWidth()*i + 10*i; //will need work but good for immediate use
-				int enemyY = enemies[i][j].imageHeight()*j + 10*j;
+				int enemyX = enemies[i][j].imageWidth()*i + 40*i; //will need work but good for immediate use
+				int enemyY = enemies[i][j].imageHeight()*j + 40*j;
 				
 				enemies[i][j].setX(enemyX);
 				enemies[i][j].setY(enemyY);
@@ -70,16 +70,22 @@ public class EnemyGroup {
 					enemies[i][j].move();
 			}
 		}
+		for (int i = 0; i<enemies.length;i++) {
+			for (int j = 0; j<enemies[i].length;j++) {
+				if (enemyAlive[i][j])
+					enemies[i][j].draw();
+			}
+		}
 	}
 	
 	public void checkCollision() {
 		//implement later
 		// for testing purpose
 		
-		enemies[5][4].loseHealth();
-		if (enemies[5][4].getHealth()==0) {
-			enemies[5][4].erase();
-			enemyAlive[5][4] = false;		}
+		//enemies[5][4].loseHealth();
+		//if (enemies[5][4].getHealth()==0) {
+			//enemies[5][4].erase();
+			//enemyAlive[5][4] = false;		}
 	}
 	
 	public int getFurthestRight() {

@@ -100,8 +100,6 @@ public class Enemy implements ItemInterface {
 			xPos += velocity;
 		else
 			xPos -= velocity;
-		
-		draw();
 	}
 	
     protected void draw(){ 

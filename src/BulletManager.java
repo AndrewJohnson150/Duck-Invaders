@@ -14,7 +14,8 @@ public class BulletManager {
 	}
 	
 	public void shoot(Player p) {
-		bullets.add(new Bullet(frame,p,bulletVelocity));
+		if (bullets.isEmpty())
+			bullets.add(new Bullet(frame,p,bulletVelocity));
 	}
 	
 	public void hitRegister(int i) {

@@ -12,7 +12,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 public class Invader_GUI extends TimerTask implements KeyListener{
 	//private static final long serialVersionUID = 1L;
@@ -27,13 +26,12 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
 	private static final int BULLET_VELOCITY = WIDTH/100;	
-	private static final int BULLET_TIMER = 500;	
-	private static final int ENEMY_TIMER = 500;	
-	private static final int NUM_STARTING_ROWS = 7;
+	private static final int ENEMY_TIMER = 250;	
+	private static final int NUM_STARTING_ROWS = 3;
 	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
 	private static final int ENEMY_HEALTH = 1;
 	private static final int ENEMY_VELOCITY = WIDTH/200;
-	private static final int GAME_PACE = 50;
+	private static final int GAME_PACE = 10;
 	private static final int gameWindowX = 0;
 	private static final int gameWindowY = 0;
 	
@@ -54,7 +52,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	private boolean canShoot = true;
-	private int bulletTimer = 0;
 	private int enemyTimer = ENEMY_TIMER;
 	private boolean spacePressed = false;
 	private boolean arrowPressed = false;
@@ -105,30 +102,18 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 		playerBullets.move();
 		
-		if (spacePressed && canShoot) {
+		if (spacePressed) {
 			playerBullets.shoot(player);
-			canShoot = false;
 		}
 		if (arrowPressed) {
 			player.move(lastArrowPressed, WIDTH);
 		}
-			
-		
-
-		
-		if (!canShoot)
-			bulletTimer += GAME_PACE;
-		if (bulletTimer > BULLET_TIMER) {
-			bulletTimer = 0;
-			canShoot = true;
-		}
-	}
+	}			
 
 	@Override
 	public void keyPressed(KeyEvent key) {
 		if (key.getKeyCode()==KeyEvent.VK_SPACE && canShoot) {
 			playerBullets.shoot(player);
-			canShoot = false;
 			spacePressed = true;
 		}
 		
