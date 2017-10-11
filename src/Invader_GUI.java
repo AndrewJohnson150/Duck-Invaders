@@ -147,6 +147,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		else if (key.getKeyCode() != KeyEvent.VK_SPACE) {
 			arrowPressed = true;
 			lastArrowPressed = key;
+			player.move(key, WIDTH);
 		}
 		
 		/*if (!arrowPressed) {

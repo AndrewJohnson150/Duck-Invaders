@@ -35,16 +35,19 @@ public class EnemyGroup {
 	public void move() {
 		int imWidth = enemies[0][0].imageWidth();
 		
-		int rightBound =  (Invader_GUI.WIDTH);
+		int rightBound = Invader_GUI.WIDTH;
 		int leftBound = 0;
 		
-		int rightEnemyEdge =  enemies[getFurthestRight()][0].getX() + imWidth;
-		int leftEnemyEdge = enemies[getFurthestLeft()][0].getX();
+		int[] furthestRightCoords = getFurthestRight();
+		int[] furthestLeftCoords = getFurthestLeft();
 		
-		if(rightEnemyEdge>rightBound) {
+		int rightEnemyEdge =  enemies[furthestRightCoords[0]][furthestRightCoords[1]].getX() + imWidth + enemies[0][0].getVelocity();
+		int leftEnemyEdge = enemies[furthestLeftCoords[0]][furthestLeftCoords[1]].getX() - enemies[0][0].getVelocity();
+		
+		if(rightEnemyEdge>=rightBound) {
 			changeDirection(Invader_GUI.LEFT);
 		}
-		if(leftEnemyEdge<leftBound) {
+		if(leftEnemyEdge<=leftBound) {
 			changeDirection(Invader_GUI.RIGHT);
 		}
 		
@@ -65,7 +68,7 @@ public class EnemyGroup {
 	private void moveAll() {
 		for (int i = 0; i<enemies.length;i++) {
 			for (int j = 0; j<enemies[i].length;j++) {
-				if (enemyAlive[i][j])
+				if (enemyAlive[i][j])	
 					enemies[i][j].move();
 			}
 		}
@@ -77,26 +80,26 @@ public class EnemyGroup {
 		}
 	}
 	
-	public int getFurthestRight() {
+	public int[] getFurthestRight() {
 		for (int i = enemyAlive.length-1; i>0 ;i--) {
 			for (int j = 0; j<enemyAlive[i].length;j++) {
 				if (enemyAlive[i][j]) {
-					return i;
-				}
+					return new int[] {i,j};
+				}	
 			}
 		}
-		return 0;	
+		return new int[] {0,0};	
 	}
 	
-	public int getFurthestLeft() {
+	public int[] getFurthestLeft() {
 		for (int i = 0; i<enemyAlive.length ;i++) {
 			for (int j = 0; j<enemyAlive[i].length;j++) {
 				if (enemyAlive[i][j]) {
-					return i;
+					return new int[] {i,j};
 				}
 			}
 		}
-		return 0;	
+		return new int[] {0,0};	
 	}
 
 	public int[][] getDuckMap() {
@@ -111,15 +114,16 @@ public class EnemyGroup {
 		for (int i = 0; i<enemies.length ;i++) {
 			for (int j = 0; j<enemies[i].length;j++) {
 				Enemy currentE = enemies[i][j];
-				for (int x = currentE.getX(); x < currentE.getX() + currentE.imageWidth(); x++) {
+				for (int x = currentE.getX(); x < Math.max(Math.min(currentE.getX() + currentE.imageWidth(),Invader_GUI.WIDTH),0); x++) {
 					for (int y = currentE.getY(); y < currentE.getY() + currentE.imageHeight(); y++) {
 							if (!enemyAlive[i][j])
-								continue;
+								continue;	
 							else if (i == 0 && j == 0) { //requires special implementation cause it would be 0
-									duckMap[x][y] = -1;						
+								duckMap[x][y] = -1;						
 							}
-							else
+							else {
 								duckMap[x][y] = i*1000 + j;
+							}
 					}
 				}
 			}
@@ -131,7 +135,9 @@ public class EnemyGroup {
 		enemies[x][y].loseHealth();
 		if (enemies[x][y].getHealth()<=0) {
 			enemies[x][y].erase();
-			enemyAlive[x][y] = false;
+			synchronized (this) {
+				enemyAlive[x][y] = false;
+			}
 		}
 	}
 
