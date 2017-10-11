@@ -31,8 +31,6 @@ public class EnemyGroup {
 				enemyAlive[i][j] = true;
 			}
 		}
-		//for testing
-		checkCollision();
 	}
 	
 	public void move() {
