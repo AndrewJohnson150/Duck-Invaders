@@ -1,50 +1,39 @@
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
 
 public class BulletManager {
 	private JFrame frame;
-	private LinkedList<Bullet> bullets;
+	private Bullet bullet;
 	private int bulletVelocity;
 	
 	public BulletManager(JFrame passedInFrame, int screenHeight, int bVelocity) {
 		frame = passedInFrame;
-		bullets = new LinkedList<Bullet>();
 		bulletVelocity = bVelocity;
 	}
 	
 	public void shoot(Player p) {
-		if (bullets.isEmpty())
-			bullets.add(new Bullet(frame,p,bulletVelocity));
+		if (bullet==null)
+			bullet = new Bullet(frame,p,bulletVelocity);
 	}
 	
-	public void hitRegister(int i) {
-		//TODO
+	public void hitRegister() {
+		bullet.erase();
+		bullet = null;
 	}
 	
-	public int[][] bulletLocations() {
-		int[][] orderedPairs = new int[bullets.size()][2];
+	public int[] bulletLocation() {
+		if (bullet!=null)
+			return bullet.getLoc();
 		
-		for (int i = 0; i<bullets.size();i++) {
-			orderedPairs[i] = bullets.get(i).getLoc();
-		}
-		
-		return orderedPairs;
+		return null;
 	}
 	
 	public void move() {
-		for (int i = 0; i<bullets.size();i++) {
-			if (bullets.get(i).getY() < 0) {
-				bullets.get(i).erase();
-				bullets.remove(i);
+		if (bullet!=null) {
+			bullet.move();
+			if (bullet.getY() < 0) {
+				bullet.erase();
+				bullet = null;
 			}
-		}
-		moveAll();
-	}
-	
-	public void moveAll() {
-		for (Bullet b : bullets) {
-			b.move();
 		}
 	}
 }

@@ -75,7 +75,6 @@ public class Player implements ItemInterface {
 	public void move(KeyEvent e, int screenWidth) {
 		int xBoundR = (screenWidth - playerImage.getIconWidth());
 		int xBoundL = 0;
-		
 			
 		if (xPos >=  xBoundL && e.getKeyCode() == (KeyEvent.VK_LEFT) ) {
 			xPos -= velocity;
