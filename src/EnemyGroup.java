@@ -7,8 +7,6 @@ public class EnemyGroup {
 	private boolean[][] enemyAlive;
 	private JFrame frame;
 	
-	private int width;
-	
 	public EnemyGroup(JFrame passedInFrame, int cols, int rows, int eVelocity, int eHealth) {
 		numColumns = cols;
 		numRows = rows;
