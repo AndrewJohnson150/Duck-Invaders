@@ -41,10 +41,10 @@ public class EnemyGroup {
 		int rightEnemyEdge =  enemies[getFurthestRight()][0].getX() + imWidth;
 		int leftEnemyEdge = enemies[getFurthestLeft()][0].getX();
 		
-		if(rightEnemyEdge>rightBound-25) {
+		if(rightEnemyEdge>rightBound) {
 			changeDirection(Invader_GUI.LEFT);
 		}
-		if(leftEnemyEdge<leftBound+25) {
+		if(leftEnemyEdge<leftBound) {
 			changeDirection(Invader_GUI.RIGHT);
 		}
 		
@@ -113,16 +113,13 @@ public class EnemyGroup {
 				Enemy currentE = enemies[i][j];
 				for (int x = currentE.getX(); x < currentE.getX() + currentE.imageWidth(); x++) {
 					for (int y = currentE.getY(); y < currentE.getY() + currentE.imageHeight(); y++) {
-						//try{
-							
 							if (!enemyAlive[i][j])
 								continue;
-							else if (i == 0 && j == 0) { //requires implementation cause it would be 0
+							else if (i == 0 && j == 0) { //requires special implementation cause it would be 0
 									duckMap[x][y] = -1;						
 							}
 							else
-								duckMap[x][y] = i*1000 + j; //maybe unnecessary
-						//} catch (Exception ignore) {System.out.println("error hit");}
+								duckMap[x][y] = i*1000 + j;
 					}
 				}
 			}
@@ -131,9 +128,6 @@ public class EnemyGroup {
 	}
 	
 	public void registerCollision(int x, int y) {
-		if (x == 0 && y == 0 ) {
-			System.out.println("Hit that fucker");
-		}
 		enemies[x][y].loseHealth();
 		if (enemies[x][y].getHealth()<=0) {
 			enemies[x][y].erase();
