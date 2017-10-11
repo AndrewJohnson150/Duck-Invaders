@@ -6,6 +6,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Enemy implements ItemInterface {
+	private static final int IMAGE_SIZE = 50;
 	private int xPos;
 	private int yPos;
 	private int health;
@@ -15,6 +16,7 @@ public class Enemy implements ItemInterface {
 	private ImageIcon enemyImage;
 	private JLabel enemyJLabel;
 	private JFrame enemyJFrame;
+	
 	
 	public Enemy(JFrame passedInJFrame, int startX, int startY, int h, int vel, int dir) {
 		xPos = startX;
@@ -40,12 +42,12 @@ public class Enemy implements ItemInterface {
 	private void setImage() {
 		if(direction == RIGHT) {
 		 	enemyImage = new ImageIcon ("Images/duck1.png"); //change
-		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 75, 75);
+		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 		    enemyImage = new ImageIcon(i);
 		}
 		else {
 			enemyImage = new ImageIcon ("Images/duck2.png"); //change
-		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), 75, 75);
+		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 		    enemyImage = new ImageIcon(i);
 		}
 	}
