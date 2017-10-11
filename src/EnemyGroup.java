@@ -9,11 +9,10 @@ public class EnemyGroup {
 	
 	private int width;
 	
-	public EnemyGroup(JFrame passedInFrame, int screenWidth, int cols, int rows, int eVelocity, int eHealth) {
+	public EnemyGroup(JFrame passedInFrame, int cols, int rows, int eVelocity, int eHealth) {
 		numColumns = cols;
 		numRows = rows;
 		frame = passedInFrame;
-		width = screenWidth;
 		
 		enemies = new Enemy[numColumns][numRows];
 		enemyAlive = new boolean[numColumns][numRows];
@@ -35,15 +34,17 @@ public class EnemyGroup {
 	
 	public void move() {
 		int imWidth = enemies[0][0].imageWidth();
-		int rightBound =  (width - imWidth);
+		
+		int rightBound =  (Invader_GUI.WIDTH);
 		int leftBound = 0;
-		int rightEnemyEdge =  enemies[getFurthestRight()][0].getX();
+		
+		int rightEnemyEdge =  enemies[getFurthestRight()][0].getX() + imWidth;
 		int leftEnemyEdge = enemies[getFurthestLeft()][0].getX();
 		
-		if(rightEnemyEdge>rightBound) {
+		if(rightEnemyEdge>rightBound-25) {
 			changeDirection(Invader_GUI.LEFT);
 		}
-		if(leftEnemyEdge<leftBound) {
+		if(leftEnemyEdge<leftBound+25) {
 			changeDirection(Invader_GUI.RIGHT);
 		}
 		
@@ -76,16 +77,6 @@ public class EnemyGroup {
 		}
 	}
 	
-	public void checkCollision() {
-		//implement later
-		// for testing purpose
-		
-		//enemies[5][4].loseHealth();
-		//if (enemies[5][4].getHealth()==0) {
-			//enemies[5][4].erase();
-			//enemyAlive[5][4] = false;		}
-	}
-	
 	public int getFurthestRight() {
 		for (int i = enemyAlive.length-1; i>0 ;i--) {
 			for (int j = 0; j<enemyAlive[i].length;j++) {
@@ -106,6 +97,48 @@ public class EnemyGroup {
 			}
 		}
 		return 0;	
+	}
+
+	public int[][] getDuckMap() {
+		int [][] duckMap = new int[Invader_GUI.WIDTH+enemies[0][0].imageWidth()][Invader_GUI.HEIGHT+enemies[0][0].imageWidth()];
+											//adding as a buffer
+		for (int[] arr : duckMap) {
+			for (int i : arr) {
+				i = 0;
+			}
+		}
+		
+		for (int i = 0; i<enemies.length ;i++) {
+			for (int j = 0; j<enemies[i].length;j++) {
+				Enemy currentE = enemies[i][j];
+				for (int x = currentE.getX(); x < currentE.getX() + currentE.imageWidth(); x++) {
+					for (int y = currentE.getY(); y < currentE.getY() + currentE.imageHeight(); y++) {
+						//try{
+							
+							if (!enemyAlive[i][j])
+								continue;
+							else if (i == 0 && j == 0) { //requires implementation cause it would be 0
+									duckMap[x][y] = -1;						
+							}
+							else
+								duckMap[x][y] = i*1000 + j; //maybe unnecessary
+						//} catch (Exception ignore) {System.out.println("error hit");}
+					}
+				}
+			}
+		}
+		return duckMap;
+	}
+	
+	public void registerCollision(int x, int y) {
+		if (x == 0 && y == 0 ) {
+			System.out.println("Hit that fucker");
+		}
+		enemies[x][y].loseHealth();
+		if (enemies[x][y].getHealth()<=0) {
+			enemies[x][y].erase();
+			enemyAlive[x][y] = false;
+		}
 	}
 
 }

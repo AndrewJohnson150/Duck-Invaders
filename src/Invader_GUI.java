@@ -84,7 +84,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY,RIGHT);
 		player.draw();
 		
-		ducks = new EnemyGroup(frame, WIDTH, NUM_STARTING_COLS, NUM_STARTING_ROWS, ENEMY_VELOCITY, ENEMY_HEALTH);
+		ducks = new EnemyGroup(frame,NUM_STARTING_COLS, NUM_STARTING_ROWS, ENEMY_VELOCITY, ENEMY_HEALTH);
 		
 		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
 		
@@ -115,7 +115,26 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	public void checkForCollision() {
 		int[] bulletLocation = playerBullets.bulletLocation();
-		//we can optimize by checking if bullet is in the bounds of the enemy group
+		if (bulletLocation!=null) {
+			int bulletX = bulletLocation[0];
+			int bulletY = bulletLocation[1];
+			//we can optimize by checking if bullet is in the bounds of the enemy group
+		
+			//make map
+			int[][] duckMap = ducks.getDuckMap();
+			
+			if (duckMap[bulletX][bulletY]!=0) {
+				int duckIndexX = 0;
+				int duckIndexY = 0;
+				
+				if (duckMap[bulletX][bulletY] != -1) { 
+					duckIndexX = duckMap[bulletX][bulletY]/1000;
+					duckIndexY = duckMap[bulletX][bulletY]%1000;
+				}
+				ducks.registerCollision(duckIndexX,duckIndexY);
+				playerBullets.hitRegister();
+			}
+		}
 	}
 
 	@Override

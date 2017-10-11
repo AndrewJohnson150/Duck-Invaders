@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
 
 public class BulletManager {
@@ -17,12 +15,16 @@ public class BulletManager {
 			bullet = new Bullet(frame,p,bulletVelocity);
 	}
 	
-	public void hitRegister(int i) {
-		//TODO
+	public void hitRegister() {
+		bullet.erase();
+		bullet = null;
 	}
 	
 	public int[] bulletLocation() {
-		return bullet.getLoc();
+		if (bullet!=null)
+			return bullet.getLoc();
+		
+		return null;
 	}
 	
 	public void move() {
