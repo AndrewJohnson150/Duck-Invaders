@@ -142,14 +142,11 @@ public class EnemyGroup {
 	}
 	
 	public int[] getFurthestDown() {
-		for (int i = enemyAlive.length-1; i>0;i++) {
-			int counter = 0;
-			for (int j = enemyAlive[counter].length-1; j>0 ;j++) {
+		for (int j = enemyAlive[0].length-1; j>=0 ;j--) {
+			for (int i = enemyAlive.length-1; i>=0;i--) {
 				if (enemyAlive[i][j]) {
-					//System.out.println(i +" "+ j); //for testing
 					return new int[] {i,j};
 				}
-				counter++;
 			}
 		}
 		return new int[] {0,0};
@@ -158,8 +155,18 @@ public class EnemyGroup {
 	public int furthestDownPos() {
 		int[] furthestDownCoods = getFurthestDown();
 		int downEnemyEdge = enemies[furthestDownCoods[0]][furthestDownCoods[1]].getY() + enemies[furthestDownCoods[0]][furthestDownCoods[1]].imageHeight();
-		//System.out.println( "geY(); "+enemies[furthestDownCoods[0]][furthestDownCoods[1]].getY()); //for testing
-		//System.out.println("Down Edge "+downEnemyEdge); //for testing
 		return downEnemyEdge;
+	}
+	
+	public boolean emptyDucks() {
+		//boolean empty = true;
+		for (int i =0; i<enemyAlive.length;i++) {
+			for (int j = 0; j<enemyAlive[i].length;j++) {
+				if (enemyAlive[i][j]) {
+					return false;
+				}	
+			}
+		}
+		return true;
 	}
 }
