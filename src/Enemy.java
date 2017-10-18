@@ -6,7 +6,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Enemy implements ItemInterface {
-	private static final int IMAGE_SIZE = 50;
+	
+	private static final int IMAGE_SIZE = Invader_GUI.WIDTH/35;
+	
 	private int xPos;
 	private int yPos;
 	private int health;

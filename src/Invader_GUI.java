@@ -25,6 +25,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	public static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
+
 	private static final int PLAYER_VELOCITY = WIDTH/200;
 	private static final int BULLET_VELOCITY = WIDTH/100;	
 	private static final int ENEMY_TIMER = 10;	
