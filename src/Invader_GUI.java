@@ -208,5 +208,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		if(ducks.furthestDownPos() >= player.getY()) {
 			System.exit(0);
 		}
-	}
+		if(ducks.emptyDucks()) {
+			System.exit(0);
+		}
+	} 
 }
