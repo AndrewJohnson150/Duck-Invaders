@@ -30,7 +30,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int BULLET_VELOCITY = WIDTH/100;	
 
 	private static final int ENEMY_TIMER = 10;	
-	private static final int NUM_STARTING_ROWS = 3;
+	private static final int NUM_STARTING_ROWS = 5;
 	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
 	private static final int ENEMY_HEALTH = 1;
 	private static final int ENEMY_VELOCITY = WIDTH/300;
@@ -67,6 +67,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private BulletManager playerBullets;
 	private Timer gameTimer;
 	
+	/**
+	 * sets up the GUI and starts the timer. Creates player and enemy manager as well.
+	 */
 	public Invader_GUI() {
 		String gameTitle = "Duck Invaders";
 		frame = new JFrame(gameTitle);
@@ -96,6 +99,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 
 	
+	/**
+	 * called every tick of the timer. moves enemies, bullets, and checks for collisions.
+	 */
 	public void run() {
 		winOrLose();
 		enemyTimer += GAME_PACE;
@@ -118,6 +124,12 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 	}			
 	
+	/**
+	 * checks for collision by creating a 2d array of ints that represents all the living ducks' 
+	 * locations.
+	 * @see #playerBullets
+	 * @see #ducks
+	 */
 	public void checkForCollision() {
 		int[] bulletLocation = playerBullets.bulletLocation();
 		if (bulletLocation!=null) {
@@ -142,6 +154,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		}
 	}
 
+	
+	/**
+	 * if the key was space, will shoot and then set spacePressed to true, which indicates that space is pressed.
+	 * If the key was not space, will register that arrow was pressed and set arrowPressed to true
+	 */
 	@Override
 	public void keyPressed(KeyEvent key) {
 		if (key.getKeyCode()==KeyEvent.VK_SPACE && canShoot) {
@@ -160,6 +177,10 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		}*/
 	}
 
+	/**
+	 * if the key that was release was space, set spacePressed to false. 
+	 * Likewise with arrow and arrowPressed
+	 */
 	@Override
 	public void keyReleased(KeyEvent key) {
 		if (key.getKeyCode()==KeyEvent.VK_SPACE)
@@ -179,6 +200,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public void keyTyped(KeyEvent key) {
 	}
 	
+	/**
+	 * checks for a win or loss
+	 */
 	private void winOrLose() {
 		
 		if(ducks.furthestDownPos() >= player.getY()) {

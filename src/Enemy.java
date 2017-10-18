@@ -41,6 +41,10 @@ public class Enemy implements ItemInterface {
 	    enemyImage = new ImageIcon(i);*/
 	}
 	
+	/**
+	 * sets the image of the duck. If going to the right, use the right-facing sprite.
+	 * Otherwise, use the left-facing duck sprite.
+	 */
 	private void setImage() {
 		if(direction == RIGHT) {
 		 	enemyImage = new ImageIcon ("Images/duck1.png"); //change
@@ -53,6 +57,7 @@ public class Enemy implements ItemInterface {
 		    enemyImage = new ImageIcon(i);
 		}
 	}
+	
 	public int imageWidth() {
 		return enemyImage.getIconWidth();
 	}
@@ -93,19 +98,26 @@ public class Enemy implements ItemInterface {
 		direction = d;
 	}
 	
+	/** 
+	 * this method makes the duck go down
+	 */
 	public void goDown() {
 		yPos+=5*velocity; //might want to change
 	}
-	
+
+	/**
+	 * moves the duck in its designated direction by number of pixels as designated in velocity
+	 */
 	public void move() {
-		//int xBoundR = (screenWidth - playerImage.getIconWidth());
-		//int xBoundL = 0;
 		if (direction==RIGHT)
 			xPos += velocity;
 		else
 			xPos -= velocity;
 	}
 	
+	/**
+	 * draws the image of the enemy starting at (xPos,yPos)
+	 */
     protected void draw(){ 
         enemyJLabel.setIcon(enemyImage);
         enemyJLabel.setBounds(xPos,yPos,enemyImage.getIconWidth(),enemyImage.getIconHeight());  
@@ -113,6 +125,9 @@ public class Enemy implements ItemInterface {
         setImage();
     }
     
+    /**
+     * erases the image of the duck
+     */
     protected void erase(){
         enemyJLabel.setVisible(false);
     }

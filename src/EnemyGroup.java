@@ -143,13 +143,10 @@ public class EnemyGroup {
 	
 	public int[] getFurthestDown() {
 		for (int i = enemyAlive.length-1; i>0;i++) {
-			int counter = 0;
-			for (int j = enemyAlive[counter].length-1; j>0 ;j++) {
+			for (int j = enemyAlive[i].length-1; j>0 ;j++) {
 				if (enemyAlive[i][j]) {
-					//System.out.println(i +" "+ j); //for testing
 					return new int[] {i,j};
 				}
-				counter++;
 			}
 		}
 		return new int[] {0,0};
