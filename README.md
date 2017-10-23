@@ -16,28 +16,26 @@ Welcome to Duck Invaders! You are a dog and your human has come down with bird f
 
 Implement:
 
-* [ ] player class 
+* [x] player class 
  * 1
-* [ ] graphics
+* [x] graphics
  * 2
-* [ ] timer & ticks
+* [x] timer & ticks
  * 1
-* [ ] movement of player
+* [x] movement of player
  * 3
-* [ ] enemy class
+* [x] enemy class
  * 1
-* [ ] enemy movement
+* [x] enemy movement
  * 3
-* [ ] bullet class
+* [x] bullet class
  * 1
-* [ ] collision
+* [x] collision
  * 4
-* [ ] win/loss conditions
+* [x] win/loss conditions
+ * 1
+* [ ] start menu
  * 1
 * [ ] levels/waves
  * 2
- 
- 
-## Additional Issues
-
-* remove delay in arrow key press
+* additional additions seen in issues tab
