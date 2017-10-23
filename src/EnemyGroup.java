@@ -104,7 +104,6 @@ public class EnemyGroup {
 
 	public int[][] getDuckMap() {
 		int [][] duckMap = new int[Invader_GUI.WIDTH+enemies[0][0].imageWidth()][Invader_GUI.HEIGHT+enemies[0][0].imageWidth()];
-											//adding as a buffer
 		for (int[] arr : duckMap) {
 			for (int i : arr) {
 				i = 0;
@@ -116,14 +115,14 @@ public class EnemyGroup {
 				Enemy currentE = enemies[i][j];
 				for (int x = currentE.getX(); x < Math.max(Math.min(currentE.getX() + currentE.imageWidth(),Invader_GUI.WIDTH),0); x++) {
 					for (int y = currentE.getY(); y < currentE.getY() + currentE.imageHeight(); y++) {
-							if (!enemyAlive[i][j])
-								continue;	
-							else if (i == 0 && j == 0) { //requires special implementation cause it would be 0
-								duckMap[x][y] = -1;						
-							}
-							else {
-								duckMap[x][y] = i*1000 + j;
-							}
+						if (!enemyAlive[i][j])
+							continue;	
+						else if (i == 0 && j == 0) { //requires special implementation cause it would be 0
+							duckMap[x][y] = -1;						
+						}
+						else {
+							duckMap[x][y] = i*1000 + j;
+						}
 					}
 				}
 			}

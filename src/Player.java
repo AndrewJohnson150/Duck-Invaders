@@ -72,8 +72,8 @@ public class Player implements ItemInterface {
 		health--;
 	}
 	
-	public void move(KeyEvent e, int screenWidth) {
-		int xBoundR = (screenWidth - playerImage.getIconWidth());
+	public void move(KeyEvent e) {
+		int xBoundR = (Invader_GUI.WIDTH- playerImage.getIconWidth());
 		int xBoundL = 0;
 			
 		if (xPos >=  xBoundL && e.getKeyCode() == (KeyEvent.VK_LEFT) ) {
