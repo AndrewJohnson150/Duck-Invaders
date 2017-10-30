@@ -33,7 +33,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int BULLET_VELOCITY = WIDTH/120;	
 	private static final int ENEMY_TIMER = 10;	
 	private static final int NUM_STARTING_ROWS = 1;
-	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
 	private static final int ENEMY_VELOCITY = WIDTH/300;
 	private static final int GAME_PACE = 10;
 	private static final int ENEMY_HEALTH = 1;
@@ -78,7 +77,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private boolean arrowPressed = false;
 	private KeyEvent lastArrowPressed = null;
 	
-	private JButton nextButton;
 	private JFrame frame;
 	private Player player;
 	private EnemyGroup ducks;
@@ -122,40 +120,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		frame.removeAll();
 	}
 	
-	private void startGame() {
-		frame.requestFocus();
-		int startX = WIDTH / 2;
-		int startY = (int)(((double)9/10)*HEIGHT);
-		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY,RIGHT);
-		player.draw();
-		
-		ducks = new EnemyGroup(frame,startingRows*3, startingRows, enemyVelocity, enemyHealth);
-		
-		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
-		
-		
-		gameTimer = new java.util.Timer();
-		gameTimer.schedule(this, 0, GAME_PACE);
-	}
-	
-	private void restartGame() {
-		if (nextButton!=null) {
-			nextButton.setVisible(false);
-			gameContentPane.remove(nextButton);
-			nextButton = null;
-		}
-		frame.requestFocus();
-		int startX = WIDTH / 2;
-		int startY = (int)(((double)9/10)*HEIGHT);
-		player.erase();
-		player = null;
-		ducks = null;
-		playerBullets = null;
-		gameTimer.cancel();
-		gameTimer.purge();
-		startGame();
-	}
-	
 	/**
 	 * called every tick of the timer. moves enemies, bullets, and checks for collisions.
 	 */
@@ -178,7 +142,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		if (arrowPressed) {
 			player.move(lastArrowPressed);
 		}
-
 	}			
 	
 	/**
@@ -300,8 +263,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	private void openLoseMenu() {
-		gameTimer.cancel();
-		
+		eraseAll();
 		JLabel loseMessage = new JLabel();
 		loseMessage.setText("GAME OVER");
 		loseMessage.setBounds(WIDTH/2-60, HEIGHT/2-100, 200, 50);
@@ -321,7 +283,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 			public void mouseClicked(MouseEvent e) {
 				startNewButton.setVisible(false);
 				loseMessage.setVisible(false);
-				startGame();
+				synchronized(lock) {
+					lock.notifyAll();
+				}
 			}
 		});
 	}
@@ -334,5 +298,21 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		playerBullets = null;
 		ducks.eraseDucks();
 		ducks = null;
+	}
+	
+	private void startGame() {
+		frame.requestFocus();
+		int startX = WIDTH / 2;
+		int startY = (int)(((double)9/10)*HEIGHT);
+		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY,RIGHT);
+		player.draw();
+		
+		ducks = new EnemyGroup(frame,startingRows*3, startingRows, enemyVelocity, enemyHealth);
+		
+		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
+		
+		
+		gameTimer = new java.util.Timer();
+		gameTimer.schedule(this, 0, GAME_PACE);
 	}
 }
