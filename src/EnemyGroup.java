@@ -104,11 +104,7 @@ public class EnemyGroup {
 
 	public int[][] getDuckMap() {
 		int [][] duckMap = new int[Invader_GUI.WIDTH+enemies[0][0].imageWidth()][Invader_GUI.HEIGHT+enemies[0][0].imageWidth()];
-		for (int[] arr : duckMap) {
-			for (int i : arr) {
-				i = 0;
-			}
-		}
+
 		
 		for (int i = 0; i<enemies.length ;i++) {
 			for (int j = 0; j<enemies[i].length;j++) {

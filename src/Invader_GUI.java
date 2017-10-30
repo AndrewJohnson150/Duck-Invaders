@@ -61,7 +61,10 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 					myGame.close();
 					myGame = null;
 					level++;
-					myGame = new Invader_GUI(NUM_STARTING_ROWS*(1+ level/3),ENEMY_HEALTH*(1+level/2),ENEMY_VELOCITY*(1+ level/5),false);
+					int rows = NUM_STARTING_ROWS*(1+ level/2);
+					int health = ENEMY_HEALTH*(1+level/3);
+					int velocity = (int) (ENEMY_VELOCITY*(1+ ((double)level*.3)/2));
+					myGame = new Invader_GUI(rows,health,velocity,false);
 				}
 			}
 		}
