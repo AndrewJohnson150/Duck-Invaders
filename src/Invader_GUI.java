@@ -1,6 +1,7 @@
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -15,8 +16,7 @@ import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JLabel;
 
 public class Invader_GUI extends TimerTask implements KeyListener{
 	//private static final long serialVersionUID = 1L;
@@ -33,7 +33,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int PLAYER_VELOCITY = WIDTH/200;
 	private static final int BULLET_VELOCITY = WIDTH/120;	
 	private static final int ENEMY_TIMER = 10;	
-	private static final int NUM_STARTING_ROWS = 2;
+	private static final int NUM_STARTING_ROWS = 3;
 	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
 	private static final int ENEMY_HEALTH = 3;
 	private static final int ENEMY_VELOCITY = WIDTH/300;
@@ -158,7 +158,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 				playerBullets.hitRegister();
 			}
 		}
-	}
+	}    
 
 	
 	/**
@@ -209,8 +209,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private void winOrLose() {
 		
 		if(ducks.furthestDownPos() >= player.getY()) {
-			System.exit(0);
-			//openLoseMenu();
+			openLoseMenu();
 		}
 		if(ducks.emptyDucks()) {
 			System.exit(0);
@@ -236,6 +235,29 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	private void openLoseMenu() {
+		gameTimer.cancel();
 		
+		JLabel loseMessage = new JLabel();
+		loseMessage.setText("GAME OVER");
+		loseMessage.setBounds(WIDTH/2-60, HEIGHT/2-100, 200, 50);
+		gameContentPane.add(loseMessage);
+		loseMessage.setFont(new Font(loseMessage.getName(), Font.PLAIN, 20));
+		loseMessage.setForeground(Color.RED);
+		loseMessage.setVisible(true);
+		loseMessage.requestFocus();
+
+		JButton startNewButton = new JButton("Start New Game");
+		startNewButton.setBounds(WIDTH/2-100, HEIGHT/2-50, 200, 100);
+		gameContentPane.add(startNewButton);
+		startNewButton.setVisible(true);
+		startNewButton.requestFocus();
+		startNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				startNewButton.setVisible(false);
+				loseMessage.setVisible(false);
+				startGame();
+			}
+		});
 	}
 }
