@@ -34,8 +34,8 @@ Implement:
  * 4
 * [x] win/loss conditions
  * 1
-* [ ] start menu
+* [x] start menu
  * 1
-* [ ] levels/waves
+* [x] levels/waves
  * 2
-* additional additions seen in issues tab
+* additions seen in issues tab
