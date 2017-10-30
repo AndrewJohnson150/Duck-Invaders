@@ -33,29 +33,37 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int BULLET_VELOCITY = WIDTH/120;	
 	private static final int ENEMY_TIMER = 10;	
 	private static final int NUM_STARTING_ROWS = 1;
-	private static final int ENEMY_VELOCITY = WIDTH/300;
+	private static final int ENEMY_VELOCITY = WIDTH/250;
 	private static final int GAME_PACE = 10;
 	private static final int ENEMY_HEALTH = 1;
 	private static final int gameWindowX = 0;
 	private static final int gameWindowY = 0;
 	
-	private static boolean gameIsClosed = false;
+	private static boolean gameIsLost = false;
 	private static Object lock = new Object();
 	
 	
-	public static void main(String[] args) {
-		Invader_GUI myGame = new Invader_GUI(NUM_STARTING_ROWS,ENEMY_HEALTH,ENEMY_VELOCITY,true);
-		int level = 1;
-		while (!gameIsClosed) {
-			synchronized(lock) {
-				try {
-					lock.wait();
-				} catch (InterruptedException e) {e.printStackTrace();}
+	public static void main(String[] args) {	
+		boolean first = true;
+		while(true) {
+			gameIsLost = false;
+			Invader_GUI myGame = new Invader_GUI(NUM_STARTING_ROWS,ENEMY_HEALTH,ENEMY_VELOCITY,first);
+			first = false;
+			int level = 1;
+			while (!gameIsLost) {
+				synchronized(lock) {
+					try {
+						lock.wait();
+					} catch (InterruptedException e) {e.printStackTrace();}
+				}
+				
+				if (!gameIsLost) {
+					myGame.close();
+					myGame = null;
+					level++;
+					myGame = new Invader_GUI(NUM_STARTING_ROWS*(1+ level/3),ENEMY_HEALTH*(1+level/2),ENEMY_VELOCITY*(1+ level/5),false);
+				}
 			}
-			myGame.close();
-			myGame = null;
-			level++;
-			myGame = new Invader_GUI(NUM_STARTING_ROWS*(1+ level/3),ENEMY_HEALTH*(1+level/2),ENEMY_VELOCITY*(1+ level/5),false);
 		}
 	}
 	
@@ -284,6 +292,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 				startNewButton.setVisible(false);
 				loseMessage.setVisible(false);
 				synchronized(lock) {
+					gameIsLost = true;
 					lock.notifyAll();
 				}
 			}

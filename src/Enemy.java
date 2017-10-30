@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 
@@ -91,6 +92,7 @@ public class Enemy implements ItemInterface {
 	}
 
 	public void loseHealth() {
+		enemyJFrame.getContentPane().setBackground(Color.red);
 		health--;
 	}
 	
@@ -109,6 +111,7 @@ public class Enemy implements ItemInterface {
 	 * moves the duck in its designated direction by number of pixels as designated in velocity
 	 */
 	public void move() {
+		enemyJFrame.getContentPane().setBackground(Color.gray);
 		if (direction==RIGHT)
 			xPos += velocity;
 		else
