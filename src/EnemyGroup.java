@@ -168,4 +168,14 @@ public class EnemyGroup {
 		}
 		return true;
 	}
+	
+	public void eraseDucks() {
+		for (int i = 0; i<enemyAlive.length ;i++) {
+			for (int j = 0; j<enemyAlive[i].length;j++) {
+				if (enemyAlive[i][j]) {
+					enemies[i][j].erase();
+				}
+			}
+		}
+	}
 }

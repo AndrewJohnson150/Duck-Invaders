@@ -20,7 +20,6 @@ import javax.swing.border.EmptyBorder;
 
 public class Invader_GUI extends TimerTask implements KeyListener{
 	//private static final long serialVersionUID = 1L;
-	//private JPanel myContent;
 	private Container gameContentPane;
 	
 	public static final int UP = 0;
@@ -33,16 +32,32 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int PLAYER_VELOCITY = WIDTH/200;
 	private static final int BULLET_VELOCITY = WIDTH/120;	
 	private static final int ENEMY_TIMER = 10;	
-	private static final int NUM_STARTING_ROWS = 2;
+	private static final int NUM_STARTING_ROWS = 1;
 	private static final int NUM_STARTING_COLS = 3*NUM_STARTING_ROWS;
-	private static final int ENEMY_HEALTH = 3;
 	private static final int ENEMY_VELOCITY = WIDTH/300;
 	private static final int GAME_PACE = 10;
+	private static final int ENEMY_HEALTH = 1;
 	private static final int gameWindowX = 0;
 	private static final int gameWindowY = 0;
 	
+	private static boolean gameIsClosed = false;
+	private static Object lock = new Object();
+	
+	
 	public static void main(String[] args) {
-		Invader_GUI myGame = new Invader_GUI();
+		Invader_GUI myGame = new Invader_GUI(NUM_STARTING_ROWS,ENEMY_HEALTH,ENEMY_VELOCITY,true);
+		int level = 1;
+		while (!gameIsClosed) {
+			synchronized(lock) {
+				try {
+					lock.wait();
+				} catch (InterruptedException e) {e.printStackTrace();}
+			}
+			myGame.close();
+			myGame = null;
+			level++;
+			myGame = new Invader_GUI(NUM_STARTING_ROWS*(1+ level/3),ENEMY_HEALTH*(1+level/2),ENEMY_VELOCITY*(1+ level/5),false);
+		}
 	}
 	
 	//https://stackoverflow.com/questions/6714045/how-to-resize-jlabel-imageicon
@@ -63,21 +78,29 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private boolean arrowPressed = false;
 	private KeyEvent lastArrowPressed = null;
 	
-
+	private JButton nextButton;
 	private JFrame frame;
 	private Player player;
 	private EnemyGroup ducks;
 	private BulletManager playerBullets;
 	private Timer gameTimer;
 	
+	private int enemyHealth;
+	private int enemyVelocity;
+	private int startingRows;
+	
+	
 	/**
 	 * sets up the GUI and starts the timer. Creates player and enemy manager as well.
 	 */
-	public Invader_GUI() {
+	public Invader_GUI(int rows, int duckHealth, int duckVelocity, boolean firstTime) {
+		enemyHealth = duckHealth;
+		enemyVelocity = duckVelocity;
+		startingRows = rows;
+		
 		String gameTitle = "Duck Invaders";
 		frame = new JFrame(gameTitle);
 		frame.setSize(WIDTH, HEIGHT);
-		
 		frame.setLocation(gameWindowX, gameWindowY);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -87,7 +110,16 @@ public class Invader_GUI extends TimerTask implements KeyListener{
         frame.addKeyListener(this);
         frame.setResizable(false);
         
-		openStartMenu();
+		if (firstTime) {
+			openStartMenu();
+		}
+		else {
+			startGame();
+		}
+	}
+	
+	public void close() {
+		frame.removeAll();
 	}
 	
 	private void startGame() {
@@ -97,12 +129,31 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY,RIGHT);
 		player.draw();
 		
-		ducks = new EnemyGroup(frame,NUM_STARTING_COLS, NUM_STARTING_ROWS, ENEMY_VELOCITY, ENEMY_HEALTH);
+		ducks = new EnemyGroup(frame,startingRows*3, startingRows, enemyVelocity, enemyHealth);
 		
 		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
 		
+		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);
+	}
+	
+	private void restartGame() {
+		if (nextButton!=null) {
+			nextButton.setVisible(false);
+			gameContentPane.remove(nextButton);
+			nextButton = null;
+		}
+		frame.requestFocus();
+		int startX = WIDTH / 2;
+		int startY = (int)(((double)9/10)*HEIGHT);
+		player.erase();
+		player = null;
+		ducks = null;
+		playerBullets = null;
+		gameTimer.cancel();
+		gameTimer.purge();
+		startGame();
 	}
 	
 	/**
@@ -209,11 +260,10 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private void winOrLose() {
 		
 		if(ducks.furthestDownPos() >= player.getY()) {
-			System.exit(0);
-			//openLoseMenu();
+			openLoseMenu();
 		}
 		if(ducks.emptyDucks()) {
-			System.exit(0);
+			openWinMenu();
 		}
 	} 
 	
@@ -232,10 +282,34 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	private void openWinMenu() {
-		
+		eraseAll();
+		JButton nextButton = new JButton("Start Next Level");
+		nextButton.setBounds(WIDTH/2-100, HEIGHT/2-50, 200, 100);
+		gameContentPane.add(nextButton);
+		nextButton.setVisible(true);
+		nextButton.requestFocus();
+		nextButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				nextButton.setVisible(false);
+				synchronized(lock) {
+					lock.notifyAll();
+				}
+			}
+		});
 	}
 	
 	private void openLoseMenu() {
 		
+	}
+	
+	private void eraseAll() {
+		gameTimer.cancel();
+		gameTimer.purge();
+		player.erase();
+		player = null;
+		playerBullets = null;
+		ducks.eraseDucks();
+		ducks = null;
 	}
 }
