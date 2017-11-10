@@ -51,7 +51,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		boolean first = true;
 		while(true) {
 			gameIsLost = false;
-			Invader_GUI myGame = new Invader_GUI(NUM_STARTING_ROWS,ENEMY_HEALTH,ENEMY_VELOCITY,first);
+			Invader_GUI myGame = new Invader_GUI(NUM_STARTING_ROWS,ENEMY_HEALTH,ENEMY_VELOCITY,1,first);
 			first = false;
 			int level = 1;
 			while (!gameIsLost) {
@@ -68,7 +68,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 					int rows = NUM_STARTING_ROWS*(1+ level/2);
 					int health = ENEMY_HEALTH*(1+level/3);
 					int velocity = (int) (ENEMY_VELOCITY*(1+ ((double)level*.3)/2));
-					myGame = new Invader_GUI(rows,health,velocity,false);
+					int numberOfBullets = health;
+					myGame = new Invader_GUI(rows,health,velocity,numberOfBullets,false);
 				}
 			}
 		}
@@ -102,16 +103,19 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private int enemyHealth;
 	private int enemyVelocity;
 	private int startingRows;
+	private int numBullets;
 	
 	
 	/**
 	 * sets up the GUI and starts the timer. Creates player and enemy manager as well.
 	 * @throws IOException 
 	 */
-	public Invader_GUI(int rows, int duckHealth, int duckVelocity, boolean firstTime) {
+	public Invader_GUI(int rows, int duckHealth, int duckVelocity, int numberOfBullets, boolean firstTime) {
 		enemyHealth = duckHealth;
 		enemyVelocity = duckVelocity;
 		startingRows = rows;
+		numBullets = numberOfBullets;
+		
 		
 		String gameTitle = "Duck Invaders";
 		frame = new JFrame(gameTitle);
@@ -122,7 +126,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
         drawBackground();
         gameContentPane = frame.getContentPane();
         gameContentPane.setLayout(null); // not need layout, will use absolute system
-      //  gameContentPane.setBackground(Color.gray);
         
         frame.addKeyListener(this);
         frame.setResizable(false);
@@ -181,25 +184,27 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * @see #ducks
 	 */
 	public void checkForCollision() {
-		int[] bulletLocation = playerBullets.bulletLocation();
-		if (bulletLocation!=null) {
-			int bulletX = bulletLocation[0];
-			int bulletY = bulletLocation[1];
+		int[][] bulletLocations = playerBullets.bulletLocation();
+		if (bulletLocations!=null) {
 			//we can optimize by checking if bullet is in the bounds of the enemy group
+		
 		
 			//make map
 			int[][] duckMap = ducks.getDuckMap();
-			
-			if (duckMap[bulletX][bulletY]!=0) {
-				int duckIndexX = 0;
-				int duckIndexY = 0;
-				
-				if (duckMap[bulletX][bulletY] != -1) { 
-					duckIndexX = duckMap[bulletX][bulletY]/1000;
-					duckIndexY = duckMap[bulletX][bulletY]%1000;
+			for (int[] bLocation : bulletLocations) {
+				int bulletX = bLocation[0];
+				int bulletY = bLocation[1];
+				if (duckMap[bulletX][bulletY]!=0) {
+					int duckIndexX = 0;
+					int duckIndexY = 0;
+					
+					if (duckMap[bulletX][bulletY] != -1) { 
+						duckIndexX = duckMap[bulletX][bulletY]/1000;
+						duckIndexY = duckMap[bulletX][bulletY]%1000;
+					}
+					ducks.registerCollision(duckIndexX,duckIndexY);
+					playerBullets.hitRegister(bulletX);
 				}
-				ducks.registerCollision(duckIndexX,duckIndexY);
-				playerBullets.hitRegister();
 			}
 		}
 	}    
@@ -340,7 +345,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 		ducks = new EnemyGroup(frame,startingRows*3, startingRows, enemyVelocity, enemyHealth);
 		
-		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY);
+		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets);
 		
 		
 		gameTimer = new java.util.Timer();
