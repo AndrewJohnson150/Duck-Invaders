@@ -11,9 +11,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -93,6 +97,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private EnemyGroup ducks;
 	private BulletManager playerBullets;
 	private Timer gameTimer;
+	private BufferedImage bckgrnd = null;
 	
 	private int enemyHealth;
 	private int enemyVelocity;
@@ -101,6 +106,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	/**
 	 * sets up the GUI and starts the timer. Creates player and enemy manager as well.
+	 * @throws IOException 
 	 */
 	public Invader_GUI(int rows, int duckHealth, int duckVelocity, boolean firstTime) {
 		enemyHealth = duckHealth;
@@ -113,9 +119,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		frame.setLocation(gameWindowX, gameWindowY);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        drawBackground();
         gameContentPane = frame.getContentPane();
         gameContentPane.setLayout(null); // not need layout, will use absolute system
-        gameContentPane.setBackground(Color.gray);
+      //  gameContentPane.setBackground(Color.gray);
+        
         frame.addKeyListener(this);
         frame.setResizable(false);
         
@@ -127,6 +135,17 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		}
 	}
 	
+	protected void drawBackground(){ 
+		try {
+		    bckgrnd = ImageIO.read(new File("Images/background.png"));
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+		Image dimg = bckgrnd.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		frame.setContentPane(new JLabel(imageIcon));
+	}
+	 
 	public void close() {
 		frame.removeAll();
 	}
