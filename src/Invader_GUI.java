@@ -39,6 +39,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private static final int ENEMY_TIMER = 10;	
 	private static final int ENEMY_VELOCITY = WIDTH/250;
 	private static final int GAME_PACE = 10;
+
 	private static final int gameWindowX = 0;
 	private static final int gameWindowY = 0;
 	

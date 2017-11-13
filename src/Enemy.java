@@ -1,6 +1,4 @@
-import java.awt.Color;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,6 +18,7 @@ public class Enemy implements ItemInterface {
 	private JLabel enemyJLabel;
 	private JFrame enemyJFrame;
 	
+	private int hitTimer = 0;
 	
 	public Enemy(JFrame passedInJFrame, int startX, int startY, int h, int vel, int dir) {
 		xPos = startX;
@@ -27,7 +26,6 @@ public class Enemy implements ItemInterface {
 		health = h;
 		velocity = vel;
 		direction = dir;
-	
 
 	    enemyJFrame = passedInJFrame;
 	    enemyJLabel = new JLabel();
@@ -57,6 +55,12 @@ public class Enemy implements ItemInterface {
 		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 		    enemyImage = new ImageIcon(i);
 		}
+	}
+	
+	private void hitAnimation() {
+		enemyImage = new ImageIcon ("Images/hit.png"); //change
+	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
+	    enemyImage = new ImageIcon(i);
 	}
 	
 	public int imageWidth() {
@@ -92,8 +96,9 @@ public class Enemy implements ItemInterface {
 	}
 
 	public void loseHealth() {
-		enemyJFrame.getContentPane().setBackground(Color.red);
+		hitAnimation();
 		health--;
+		hitTimer++;
 	}
 	
 	public void setDirection(int d) {
@@ -111,7 +116,6 @@ public class Enemy implements ItemInterface {
 	 * moves the duck in its designated direction by number of pixels as designated in velocity
 	 */
 	public void move() {
-		enemyJFrame.getContentPane().setBackground(Color.gray);
 		if (direction==RIGHT)
 			xPos += velocity;
 		else
@@ -122,10 +126,13 @@ public class Enemy implements ItemInterface {
 	 * draws the image of the enemy starting at (xPos,yPos)
 	 */
     protected void draw(){ 
-        enemyJLabel.setIcon(enemyImage);
-        enemyJLabel.setBounds(xPos,yPos,enemyImage.getIconWidth(),enemyImage.getIconHeight());  
-        enemyJLabel.setVisible(true);
-        setImage();
+    	if(hitTimer > 1) {
+    		hitTimer = 0;
+	        enemyJLabel.setIcon(enemyImage);
+	        enemyJLabel.setBounds(xPos,yPos,enemyImage.getIconWidth(),enemyImage.getIconHeight());  
+	        enemyJLabel.setVisible(true);
+	        setImage();
+    	}
     }
     
     /**
