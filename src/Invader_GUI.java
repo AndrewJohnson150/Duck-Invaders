@@ -142,14 +142,14 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		}
 	}
 	
-	protected void drawBackground(){ 
+	private void drawBackground(){ 
 		try {
 		    bckgrnd = ImageIO.read(new File("Images/background.png"));
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
-		Image dimg = bckgrnd.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
+		Image img = bckgrnd.getScaledInstance(WIDTH, HEIGHT, Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(img);
 		frame.setContentPane(new JLabel(imageIcon));
 	}
 	 
