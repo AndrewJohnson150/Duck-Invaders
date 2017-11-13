@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.JFrame;
 
 public class BulletManager {
@@ -17,40 +20,64 @@ public class BulletManager {
 	
 	public void shoot(Player p) {
 		if (numActiveBullets<maxNumBullets) {
-			bullets[numActiveBullets] = new Bullet(frame,p,bulletVelocity);
+			System.out.println("shooting bullet: " + numActiveBullets);
+			bullets[getEmptyBulletIndex()] = new Bullet(frame,p,bulletVelocity); 
 			numActiveBullets++;
+			//note to self: make a getBulletIndex function where I use mod to make usre that we don't have extra and we might 
+			//have to change implimentation from subrtracting activeNum to just using the mod and only adding. Also: solution 
+			//for if the 0 index gets a hit but not the 1? Then ie if we have 
+			//[b][hit][b] the last bullet would get replaced! thats the problem most likely
 		}
 	}
 	
-	public void hitRegister(int xLocationOfBullet) {
-		numActiveBullets--;
-		for (Bullet b : bullets) {
-			if (b.getX() == xLocationOfBullet) {
-				b.erase();
-				b = null;
-				break;
-			}
+
+	
+	public void hitRegister(int xLocationOfBullet, int yLocationOfBullet) {
+		
+		for (int i = 0; i<maxNumBullets;i++) {
+			if (bullets[i]!=null)
+				if (bullets[i].getX() == xLocationOfBullet && bullets[i].getY() == yLocationOfBullet) {
+					System.out.println("Hit was registered");
+					bullets[i].erase();
+					bullets[i] = null;
+					numActiveBullets--;
+					break;
+				}
 		}
 	}
 	
-	public int[][] bulletLocation() {
-		int[][] locations = new int[numActiveBullets][2];
-		if (numActiveBullets>0)
-			for (int i = 0; i<numActiveBullets;i++) {
-				locations[i] = bullets[i].getLoc();
-			}
-		return null;
+	public List<int[]> bulletLocation() {
+		List<int[]> locations = new ArrayList<int[]>();
+		for (int i = 0; i<maxNumBullets;i++) {
+			if (bullets[i]!=null)
+				locations.add(bullets[i].getLoc());
+		}
+		return locations;
 	}
 	
 	public void move() {
-		for (Bullet b : bullets)
-			if (b!=null) {
-				b.move();
-				if (b.getY() < 0) {
-					b.erase();
-					b = null;
+		for (int i = 0; i<maxNumBullets; i++) {
+			if (bullets[i]!=null) {
+				bullets[i].move();
+				if (bullets[i].getY() <= 0) {
+					bullets[i].erase();
+					bullets[i] = null;
+					numActiveBullets--;
+					System.out.println(numActiveBullets + " bullet past boundaries");
+					
 				}
 			}
+		}
+	}
+	
+	private int getEmptyBulletIndex() {
+		for(int i = 0; i<maxNumBullets;i++) {
+			if (bullets[i]==null) {
+				return i;
+			}
+		}
+		System.out.println("No empty bullet, returning -1");
+		return -1;
 	}
 }
 
