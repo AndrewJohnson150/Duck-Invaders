@@ -6,6 +6,7 @@ public class EnemyGroup {
 	private Enemy[][] enemies;
 	private boolean[][] enemyAlive;
 	private JFrame frame;
+	private BulletManager birdBullets;
 	
 	public EnemyGroup(JFrame passedInFrame, int cols, int rows, int eVelocity, int eHealth) {
 		numColumns = cols;
@@ -68,8 +69,10 @@ public class EnemyGroup {
 	private void moveAll() {
 		for (int i = 0; i<enemies.length;i++) {
 			for (int j = 0; j<enemies[i].length;j++) {
-				if (enemyAlive[i][j])	
+				if (enemyAlive[i][j])	{
 					enemies[i][j].move();
+					
+				}
 			}
 		}
 		for (int i = 0; i<enemies.length;i++) {
@@ -78,6 +81,18 @@ public class EnemyGroup {
 					enemies[i][j].draw();
 			}
 		}
+	}
+	
+	Enemy shoot() {
+		for (int i = 0; i<enemies.length;i++) {
+			for (int j = 0; j<enemies[i].length;j++) {
+				if (enemyAlive[i][j])	{
+					if (Math.random()<.005)
+						return enemies[i][j];
+				}
+			}
+		}
+		return null;
 	}
 	
 	public int[] getFurthestRight() {

@@ -18,19 +18,13 @@ public class BulletManager {
 		bullets = new Bullet[MaxNumberOfBullets];
 	}
 	
-	public void shoot(Player p) {
+	public void shoot(ItemInterface p) {
 		if (numActiveBullets<maxNumBullets) {
 			System.out.println("shooting bullet: " + numActiveBullets);
 			bullets[getEmptyBulletIndex()] = new Bullet(frame,p,bulletVelocity); 
 			numActiveBullets++;
-			//note to self: make a getBulletIndex function where I use mod to make usre that we don't have extra and we might 
-			//have to change implimentation from subrtracting activeNum to just using the mod and only adding. Also: solution 
-			//for if the 0 index gets a hit but not the 1? Then ie if we have 
-			//[b][hit][b] the last bullet would get replaced! thats the problem most likely
 		}
 	}
-	
-
 	
 	public void hitRegister(int xLocationOfBullet, int yLocationOfBullet) {
 		
@@ -59,7 +53,8 @@ public class BulletManager {
 		for (int i = 0; i<maxNumBullets; i++) {
 			if (bullets[i]!=null) {
 				bullets[i].move();
-				if (bullets[i].getY() <= 0) {
+				int yLoc = bullets[i].getY();
+				if (yLoc<= 0 || yLoc>=Invader_GUI.HEIGHT) {
 					bullets[i].erase();
 					bullets[i] = null;
 					numActiveBullets--;

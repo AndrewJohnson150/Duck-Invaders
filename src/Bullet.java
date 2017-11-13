@@ -16,9 +16,8 @@ public class Bullet implements ItemInterface {
 	private JLabel bulletJLabel;
 	private JFrame bulletJFrame;
 	
-	public Bullet(JFrame passedInJFrame, Player p,  int vel) {
+	public Bullet(JFrame passedInJFrame, ItemInterface p,  int vel) {
 		velocity = vel;
-		
 		
 		bulletJFrame = passedInJFrame;
 	    bulletJLabel = new JLabel();

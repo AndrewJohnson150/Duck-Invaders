@@ -35,7 +35,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 	
 	private static final int PLAYER_VELOCITY = WIDTH/200;
-	private static final int BULLET_VELOCITY = WIDTH/120;	
+	static final int BULLET_VELOCITY = WIDTH/120;	
 	private static final int ENEMY_TIMER = 10;	
 	private static final int ENEMY_VELOCITY = WIDTH/250;
 	private static final int GAME_PACE = 10;
@@ -97,6 +97,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private Player player;
 	private EnemyGroup ducks;
 	private BulletManager playerBullets;
+	private BulletManager enemyBullets;
 	private Timer gameTimer;
 	private BufferedImage bckgrnd = null;
 	
@@ -171,6 +172,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		}
 		
 		playerBullets.move();
+		enemyBullets.move();
+		enemyShoots();
+		
 		
 		checkForCollision();
 		
@@ -182,7 +186,14 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		if (arrowPressed) {
 			player.move(lastArrowPressed);
 		}
-	}			
+	}		
+	
+	private void enemyShoots() {
+		Enemy e = ducks.shoot();
+		if (e!=null) {
+			enemyBullets.shoot(e);
+		}
+	}
 	
 	/**
 	 * checks for collision by creating a 2d array of ints that represents all the living ducks' 
@@ -191,7 +202,36 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * @see #ducks
 	 */
 	public void checkForCollision() {
+		
 		List<int[]> bulletLocations = playerBullets.bulletLocation();
+		
+		checkDuckCollision(bulletLocations);
+		
+		bulletLocations = enemyBullets.bulletLocation();
+		
+		checkPlayerCollision(bulletLocations);
+		
+	}    
+
+	private void checkPlayerCollision(List<int[]> bulletLocations) {
+		if (bulletLocations.size()>0) {
+			for (int[] bLocation : bulletLocations) {
+				int bulletX = bLocation[0];
+				int bulletY = bLocation[1];
+				if (bulletX < 0 || bulletY < 0) {
+					continue;
+				}
+				if (bulletX < player.getX()+player.imageWidth() &&
+					bulletX > player.getX() &&
+					bulletY > player.getY() &&
+					bulletY < player.getY()+player.imageHeight()) {
+					openLoseMenu();
+				}
+			}
+		}
+	}
+	
+	private void checkDuckCollision(List<int[]> bulletLocations) {
 		if (bulletLocations.size()>0) {
 			//we can optimize by checking if bullet is in the bounds of the enemy group
 		
@@ -216,9 +256,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 				}
 			}
 		}
-	}    
+		
+	}
 
-	
 	/**
 	 * if the key was space, will shoot and then set spacePressed to true, which indicates that space is pressed.
 	 * If the key was not space, will register that arrow was pressed and set arrowPressed to true
@@ -342,6 +382,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		player.erase();
 		player = null;
 		playerBullets = null;
+		enemyBullets = null;
 		ducks.eraseDucks();
 		ducks = null;
 	}
@@ -356,7 +397,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);
 		
 		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets);
-		
+		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets);
 		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);
