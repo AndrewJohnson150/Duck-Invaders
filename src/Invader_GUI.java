@@ -51,7 +51,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		boolean first = true;
 		while(true) {
 			gameIsLost = false;
-			Invader_GUI myGame = new Invader_GUI(1,1,ENEMY_VELOCITY,1,first);
+			Invader_GUI myGame = new Invader_GUI(2,2,ENEMY_VELOCITY,1,first);
 			first = false;
 			int level = 1;
 			while (!gameIsLost) {
