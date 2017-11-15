@@ -349,7 +349,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		frame.requestFocus();
 		int startX = WIDTH / 2;
 		int startY = (int)(((double)9/10)*HEIGHT);
-		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY,RIGHT);
+		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY);
 		player.draw();
 		
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);

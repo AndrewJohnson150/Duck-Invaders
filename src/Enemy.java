@@ -1,4 +1,3 @@
-import java.awt.Frame;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
