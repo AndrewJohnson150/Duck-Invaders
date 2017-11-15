@@ -1,3 +1,4 @@
+import java.awt.Frame;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -19,6 +20,7 @@ public class Enemy implements ItemInterface {
 	private JFrame enemyJFrame;
 	
 	private int hitTimer = 0;
+	private boolean dying = false;
 	
 	public Enemy(JFrame passedInJFrame, int startX, int startY, int h, int vel, int dir) {
 		xPos = startX;
@@ -107,6 +109,8 @@ public class Enemy implements ItemInterface {
 	public void loseHealth() {
 		hitTimer = 8;
 		health--;
+		if(health == 0)
+			dying = true;
 	}
 	
 	public void setDirection(int d) {
@@ -140,18 +144,21 @@ public class Enemy implements ItemInterface {
         setImage();
     }
     
-    protected void fall() {
-    	while(yPos < 600) {
-    		goDown();
-    		draw();
+    public void moveDead() {
+    	if(dying) {
+			yPos += velocity;
+			draw();
     	}
-    }
+		if(yPos > Invader_GUI.HEIGHT-Invader_GUI.HEIGHT/4) {
+			dying = false;
+			erase();
+		}
+	}
     
     /**
      * erases the image of the duck
      */
     protected void erase(){
-    	fall();
-       // enemyJLabel.setVisible(false);
+        enemyJLabel.setVisible(false);
     }
 }

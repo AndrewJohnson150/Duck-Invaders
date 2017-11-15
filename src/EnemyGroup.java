@@ -51,7 +51,7 @@ public class EnemyGroup {
 		
 		moveAll();
 		//for testing
-		getFurthestDown();
+		//getFurthestDown();
 
 	}
 	
@@ -70,6 +70,9 @@ public class EnemyGroup {
 			for (int j = 0; j<enemies[i].length;j++) {
 				if (enemyAlive[i][j])	
 					enemies[i][j].move();
+				else {
+					enemies[i][j].moveDead();
+				}
 			}
 		}
 		for (int i = 0; i<enemies.length;i++) {
@@ -130,9 +133,7 @@ public class EnemyGroup {
 		enemies[x][y].loseHealth();
 		if (enemies[x][y].getHealth()<=0) {
 			enemies[x][y].erase();
-			synchronized (this) {
-				enemyAlive[x][y] = false;
-			}
+			enemyAlive[x][y] = false;
 		}
 	}
 	

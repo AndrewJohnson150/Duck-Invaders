@@ -51,7 +51,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		boolean first = true;
 		while(true) {
 			gameIsLost = false;
-			Invader_GUI myGame = new Invader_GUI(2,2,ENEMY_VELOCITY,1,first);
+			Invader_GUI myGame = new Invader_GUI(1,1,ENEMY_VELOCITY,1,first);
 			first = false;
 			int level = 1;
 			while (!gameIsLost) {
@@ -162,11 +162,9 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * called every tick of the timer. moves enemies, bullets, and checks for collisions.
 	 */
 	public void run() {
-		winOrLose();
 		enemyTimer += GAME_PACE;
 		if (enemyTimer > ENEMY_TIMER) {
 			enemyTimer = 0;
-			//winOrLose();
 			ducks.move();
 		}
 		
@@ -182,6 +180,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		if (arrowPressed) {
 			player.move(lastArrowPressed);
 		}
+		winOrLose();
 	}			
 	
 	/**
@@ -270,7 +269,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		if(ducks.furthestDownPos() >= player.getY()) {
 			openLoseMenu();
 		}
-		if(ducks.emptyDucks()) {
+		else if(ducks.emptyDucks()) {
 			openWinMenu();
 		}
 	} 
