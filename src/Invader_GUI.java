@@ -157,6 +157,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 
 	public void close() {
 		frame.removeAll();
+		frame.dispose();
 	}
 	
 	/**
@@ -202,7 +203,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 */
 	public void checkForCollision() {
 		
-		List<int[]> bulletLocations = playerBullets.bulletLocation();
+		List<int[][]> bulletLocations = playerBullets.bulletLocation();
 		
 		checkDuckCollision(bulletLocations);
 		
@@ -212,48 +213,51 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 	}    
 
-	private void checkPlayerCollision(List<int[]> bulletLocations) {
+	private void checkPlayerCollision(List<int[][]> bulletLocations) {
 		if (bulletLocations.size()>0) {
-			for (int[] bLocation : bulletLocations) {
-				int bulletX = bLocation[0];
-				int bulletY = bLocation[1];
-				if (bulletX < 0 || bulletY < 0) {
-					continue;
+			for (int[][] bCorners : bulletLocations)
+				for (int[] bLocation : bCorners) {
+					int bulletX = bLocation[0];
+					int bulletY = bLocation[1];
+					if (bulletX < 0 || bulletY < 0) {
+						continue;
+					}
+					if (bulletX < player.getX()+player.imageWidth() &&
+						bulletX > player.getX() &&
+						bulletY > player.getY() &&
+						bulletY < player.getY()+player.imageHeight()) {
+						openLoseMenu();
+					}
 				}
-				if (bulletX < player.getX()+player.imageWidth() &&
-					bulletX > player.getX() &&
-					bulletY > player.getY() &&
-					bulletY < player.getY()+player.imageHeight()) {
-					openLoseMenu();
-				}
-			}
 		}
 	}
 	
-	private void checkDuckCollision(List<int[]> bulletLocations) {
+	private void checkDuckCollision(List<int[][]> bulletLocations) {
 		if (bulletLocations.size()>0) {
 			//we can optimize by checking if bullet is in the bounds of the enemy group
 		
 			//make map
 			int[][] duckMap = ducks.getDuckMap();
-			for (int[] bLocation : bulletLocations) {
-				int bulletX = bLocation[0];
-				int bulletY = bLocation[1];
-				if (bulletX < 0 || bulletY < 0) {
-					continue;
-				}
-				if (duckMap[bulletX][bulletY]!=0) {
-					int duckIndexX = 0;
-					int duckIndexY = 0;
-					
-					if (duckMap[bulletX][bulletY] != -1) { 
-						duckIndexX = duckMap[bulletX][bulletY]/1000;
-						duckIndexY = duckMap[bulletX][bulletY]%1000;
+			for (int[][] bCorners : bulletLocations)
+				for (int[] bLocation : bCorners) {
+					int bulletX = bLocation[0];
+					int bulletY = bLocation[1];
+					if (bulletX < 0 || bulletY < 0) {
+						continue;
 					}
-					ducks.registerCollision(duckIndexX,duckIndexY);
-					playerBullets.hitRegister(bulletX,bulletY);
+					if (duckMap[bulletX][bulletY]!=0) {
+						int duckIndexX = 0;
+						int duckIndexY = 0;
+						
+						if (duckMap[bulletX][bulletY] != -1) { 
+							duckIndexX = duckMap[bulletX][bulletY]/1000;
+							duckIndexY = duckMap[bulletX][bulletY]%1000;
+						}
+						ducks.registerCollision(duckIndexX,duckIndexY);
+						playerBullets.hitRegister(bulletX,bulletY);
+						break;
+					}
 				}
-			}
 		}
 		
 	}
@@ -395,8 +399,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);
 		
-		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets);
-		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets);
+		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets, "Images/bullet.png");
+		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets,"Images/bullet-hi.png");
 		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);

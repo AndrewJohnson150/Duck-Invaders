@@ -9,18 +9,20 @@ public class BulletManager {
 	private int bulletVelocity;
 	private int maxNumBullets;
 	private int numActiveBullets;
+	private String imageName;
 	
-	public BulletManager(JFrame passedInFrame, int screenHeight, int bVelocity, int MaxNumberOfBullets) {
+	public BulletManager(JFrame passedInFrame, int screenHeight, int bVelocity, int MaxNumberOfBullets, String bulletImageName) {
 		frame = passedInFrame;
 		bulletVelocity = bVelocity;
 		maxNumBullets = MaxNumberOfBullets;
 		numActiveBullets = 0;
 		bullets = new Bullet[MaxNumberOfBullets];
+		imageName = bulletImageName;
 	}
 	
 	public void shoot(ItemInterface p) {
 		if (numActiveBullets<maxNumBullets) {
-			bullets[getEmptyBulletIndex()] = new Bullet(frame,p,bulletVelocity); 
+			bullets[getEmptyBulletIndex()] = new Bullet(frame,p,bulletVelocity,imageName); 
 			numActiveBullets++;
 		}
 	}
@@ -39,10 +41,10 @@ public class BulletManager {
 				int[] botRight = {bulletX+imWidth,bulletY+imHeight};
 				int[] botLeft= {bulletX,bulletY+imHeight};
 				
-				if ((bulletX == topLeft[0] && bulletY == topLeft[1]) ||
-					(bulletX == topRight[0] && bulletY == topRight[1]) ||
-					(bulletX == botRight[0] && bulletY == botRight[1]) ||
-					(bulletX == botLeft[0] && bulletY == botLeft[1])) {
+				if ((xLocationOfBullet == topLeft[0] && yLocationOfBullet == topLeft[1]) ||
+					(xLocationOfBullet == topRight[0] && yLocationOfBullet == topRight[1]) ||
+					(xLocationOfBullet == botRight[0] && yLocationOfBullet == botRight[1]) ||
+					(xLocationOfBullet == botLeft[0] && yLocationOfBullet == botLeft[1])) {
 					bullets[i].erase();
 					bullets[i] = null;
 					numActiveBullets--;
@@ -52,14 +54,12 @@ public class BulletManager {
 		}
 	}
 	
-	public List<int[]> bulletLocation() {
-		List<int[]> locations = new ArrayList<int[]>();
+	public List<int[][]> bulletLocation() {
+		List<int[][]> locations = new ArrayList<int[][]>();
 		for (int i = 0; i<maxNumBullets;i++) {
 			if (bullets[i]!=null) {
 				int[][] locs = bullets[i].getLoc();
-				for (int[] loc : locs) {
-					locations.add(loc);
-				}
+				locations.add(locs);
 			}
 				
 		}
