@@ -6,7 +6,6 @@ public class EnemyGroup {
 	private Enemy[][] enemies;
 	private boolean[][] enemyAlive;
 	private JFrame frame;
-	private BulletManager birdBullets;
 	
 	public EnemyGroup(JFrame passedInFrame, int cols, int rows, int eVelocity, int eHealth) {
 		numColumns = cols;

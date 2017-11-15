@@ -1,4 +1,3 @@
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
@@ -45,7 +44,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	private static boolean gameIsLost = false;
 	private static Object lock = new Object();
-	
 	
 	public static void main(String[] args) {	
 		boolean first = true;
@@ -157,6 +155,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 
 	public void close() {
 		frame.removeAll();
+		frame.dispose();
 	}
 	
 	/**
@@ -172,7 +171,6 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		playerBullets.move();
 		enemyBullets.move();
 		enemyShoots();
-		
 		
 		checkForCollision();
 		
