@@ -96,7 +96,7 @@ public class EnemyGroup {
 	}
 	
 	public int[] getFurthestRight() {
-		for (int i = enemyAlive.length-1; i>0 ;i--) {
+		for (int i = enemyAlive.length-1; i>=0 ;i--) {
 			for (int j = 0; j<enemyAlive[i].length;j++) {
 				if (enemyAlive[i][j]) {
 					return new int[] {i,j};
@@ -145,9 +145,7 @@ public class EnemyGroup {
 		enemies[x][y].loseHealth();
 		if (enemies[x][y].getHealth()<=0) {
 			enemies[x][y].erase();
-			synchronized (this) {
-				enemyAlive[x][y] = false;
-			}
+			enemyAlive[x][y] = false;
 		}
 	}
 	

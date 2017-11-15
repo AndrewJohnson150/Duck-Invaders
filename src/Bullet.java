@@ -49,8 +49,15 @@ public class Bullet implements ItemInterface {
 		return yPos;
 	}
 	
-	public int[] getLoc() {
-		return new int[]{xPos,yPos};
+	public int[][] getLoc() {
+		
+		int[][] corners = {
+		{xPos+imageWidth(),yPos},
+		{xPos,yPos},
+		{xPos+imageWidth(),yPos+imageHeight()},
+		{xPos,yPos+imageHeight()}
+		};
+		return corners;
 	}
 
 	public int getHealth() {

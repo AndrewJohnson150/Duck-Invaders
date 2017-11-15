@@ -20,7 +20,6 @@ public class BulletManager {
 	
 	public void shoot(ItemInterface p) {
 		if (numActiveBullets<maxNumBullets) {
-			System.out.println("shooting bullet: " + numActiveBullets);
 			bullets[getEmptyBulletIndex()] = new Bullet(frame,p,bulletVelocity); 
 			numActiveBullets++;
 		}
@@ -29,22 +28,40 @@ public class BulletManager {
 	public void hitRegister(int xLocationOfBullet, int yLocationOfBullet) {
 		
 		for (int i = 0; i<maxNumBullets;i++) {
-			if (bullets[i]!=null)
-				if (bullets[i].getX() == xLocationOfBullet && bullets[i].getY() == yLocationOfBullet) {
-					System.out.println("Hit was registered");
+			if (bullets[i]!=null) {
+				int bulletX = bullets[i].getX();
+				int bulletY = bullets[i].getY();
+				int imWidth = bullets[i].imageWidth();
+				int imHeight = bullets[i].imageHeight();
+				
+				int[] topRight = {bulletX+imWidth,bulletY};
+				int[] topLeft = {bulletX,bulletY};
+				int[] botRight = {bulletX+imWidth,bulletY+imHeight};
+				int[] botLeft= {bulletX,bulletY+imHeight};
+				
+				if ((bulletX == topLeft[0] && bulletY == topLeft[1]) ||
+					(bulletX == topRight[0] && bulletY == topRight[1]) ||
+					(bulletX == botRight[0] && bulletY == botRight[1]) ||
+					(bulletX == botLeft[0] && bulletY == botLeft[1])) {
 					bullets[i].erase();
 					bullets[i] = null;
 					numActiveBullets--;
 					break;
 				}
+			}
 		}
 	}
 	
 	public List<int[]> bulletLocation() {
 		List<int[]> locations = new ArrayList<int[]>();
 		for (int i = 0; i<maxNumBullets;i++) {
-			if (bullets[i]!=null)
-				locations.add(bullets[i].getLoc());
+			if (bullets[i]!=null) {
+				int[][] locs = bullets[i].getLoc();
+				for (int[] loc : locs) {
+					locations.add(loc);
+				}
+			}
+				
 		}
 		return locations;
 	}
@@ -58,7 +75,6 @@ public class BulletManager {
 					bullets[i].erase();
 					bullets[i] = null;
 					numActiveBullets--;
-					System.out.println(numActiveBullets + " bullet past boundaries");
 					
 				}
 			}
@@ -71,7 +87,6 @@ public class BulletManager {
 				return i;
 			}
 		}
-		System.out.println("No empty bullet, returning -1");
 		return -1;
 	}
 }
