@@ -1,5 +1,4 @@
 import java.awt.Image;
-import java.awt.event.KeyEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -10,7 +9,6 @@ public class Bullet implements ItemInterface {
 	private int yPos;
 	private int health;
 	private int velocity;
-	private int direction;
 	
 	private ImageIcon bulletImage;
 	private JLabel bulletJLabel;

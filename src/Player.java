@@ -10,18 +10,16 @@ public class Player implements ItemInterface {
 	private int yPos;
 	private int health;
 	private int velocity;
-	private int direction;
 	
 	private ImageIcon playerImage;
 	private JLabel playerJLabel;
 	private JFrame playerJFrame;
 	
-	public Player(JFrame passedInJFrame, int startX, int startY, int h, int vel, int dir) {
+	public Player(JFrame passedInJFrame, int startX, int startY, int h, int vel) {
 		xPos = startX;
 		yPos = startY;
 		health = h;
 		velocity = vel;
-		direction = dir;
 	
 
 	    playerJFrame = passedInJFrame;

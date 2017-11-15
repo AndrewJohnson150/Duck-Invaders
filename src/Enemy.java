@@ -19,6 +19,7 @@ public class Enemy implements ItemInterface {
 	private JFrame enemyJFrame;
 	
 	private int hitTimer = 0;
+	private boolean dying = false;
 	
 	public Enemy(JFrame passedInJFrame, int startX, int startY, int h, int vel, int dir) {
 		xPos = startX;
@@ -45,23 +46,29 @@ public class Enemy implements ItemInterface {
 	 * Otherwise, use the left-facing duck sprite.
 	 */
 	private void setImage() {
-		
-		if(hitTimer > 1) {
-    		enemyImage = new ImageIcon ("Images/hit.png"); //change
-    	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
-    	    enemyImage = new ImageIcon(i);
-    		hitTimer--;  
-    	}
+		if(health == 0) {
+			enemyImage = new ImageIcon ("Images/falling.png"); //change
+		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
+		    enemyImage = new ImageIcon(i);
+		}
 		else {
-			if(direction == RIGHT) {
-			 	enemyImage = new ImageIcon ("Images/duck1.png"); //change
-			    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
-			    enemyImage = new ImageIcon(i);
-			}
+			if(hitTimer > 1) {
+	    		enemyImage = new ImageIcon ("Images/hit.png"); //change
+	    	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
+	    	    enemyImage = new ImageIcon(i);
+	    		hitTimer--;  
+	    	}
 			else {
-				enemyImage = new ImageIcon ("Images/duck2.png"); //change
-			    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
-			    enemyImage = new ImageIcon(i);
+				if(direction == RIGHT) {
+				 	enemyImage = new ImageIcon ("Images/duck1.png"); //change
+				    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
+				    enemyImage = new ImageIcon(i);
+				}
+				else {
+					enemyImage = new ImageIcon ("Images/duck2.png"); //change
+				    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
+				    enemyImage = new ImageIcon(i);
+				}
 			}
 		}
 	}
@@ -101,6 +108,8 @@ public class Enemy implements ItemInterface {
 	public void loseHealth() {
 		hitTimer = 8;
 		health--;
+		if(health == 0)
+			dying = true;
 	}
 	
 	public void setDirection(int d) {
@@ -133,6 +142,17 @@ public class Enemy implements ItemInterface {
         enemyJLabel.setVisible(true);
         setImage();
     }
+    
+    public void moveDead() {
+    	if(dying) {
+			yPos += velocity;
+			draw();
+    	}
+		if(yPos > Invader_GUI.HEIGHT-Invader_GUI.HEIGHT/4) {
+			dying = false;
+			erase();
+		}
+	}
     
     /**
      * erases the image of the duck

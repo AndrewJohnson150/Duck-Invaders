@@ -52,7 +52,7 @@ public class EnemyGroup {
 		
 		moveAll();
 		//for testing
-		getFurthestDown();
+		//getFurthestDown();
 
 	}
 	
@@ -69,9 +69,11 @@ public class EnemyGroup {
 	private void moveAll() {
 		for (int i = 0; i<enemies.length;i++) {
 			for (int j = 0; j<enemies[i].length;j++) {
-				if (enemyAlive[i][j])	{
+				if (enemyAlive[i][j]){
 					enemies[i][j].move();
-					
+				}
+				else {
+					enemies[i][j].moveDead();
 				}
 			}
 		}
