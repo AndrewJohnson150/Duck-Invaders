@@ -46,7 +46,6 @@ public class Enemy implements ItemInterface {
 	 * Otherwise, use the left-facing duck sprite.
 	 */
 	private void setImage() {
-		System.out.println(health);
 		if(health <= 0) {
 			enemyImage = new ImageIcon ("Images/falling.png"); //change
 		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
