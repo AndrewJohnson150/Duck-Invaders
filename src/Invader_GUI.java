@@ -312,17 +312,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * checks for a win or loss
 	 */
 	private void winOrLose() {
-		int x = ducks.furthestDownPos();
-		int x2 = player.getY();
-		if (x>=x2)
-			System.out.print("Lose");
 		if(ducks.furthestDownPos() >= player.getY()) {
 			openLoseMenu();
-			
 		}
 		else if(ducks.emptyDucks()) {
 			openWinMenu();
-			
 		}
 	} 
 	
