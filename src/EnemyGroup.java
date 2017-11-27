@@ -158,13 +158,17 @@ public class EnemyGroup {
 				}
 			}
 		}
-		return new int[] {0,0};
+		return null;
 	}
 	
+
 	public int furthestDownPos() {
 		int[] furthestDownCoods = getFurthestDown();
-		int downEnemyEdge = enemies[furthestDownCoods[0]][furthestDownCoods[1]].getY() + enemies[furthestDownCoods[0]][furthestDownCoods[1]].imageHeight();
-		return downEnemyEdge;
+		if (furthestDownCoods!=null) {
+			int downEnemyEdge = enemies[furthestDownCoods[0]][furthestDownCoods[1]].getY() + enemies[furthestDownCoods[0]][furthestDownCoods[1]].imageHeight();
+			return downEnemyEdge;
+		}
+		return 0; //they're all dead. Return 0 so that we don't lose.
 	}
 	
 	public boolean emptyDucks() {

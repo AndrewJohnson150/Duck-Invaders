@@ -106,6 +106,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private int numBullets;
 	private int bulletDelay;	
 	
+	private boolean gameIsPlaying;
+	
 	/**
 	 * sets up the GUI and starts the timer. Creates player and enemy manager as well.
 	 * @throws IOException 
@@ -162,6 +164,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * called every tick of the timer. moves enemies, bullets, and checks for collisions.
 	 */
 	public void run() {
+	
 		enemyTimer += GAME_PACE;
 		if (enemyTimer > ENEMY_TIMER) {
 			enemyTimer = 0;
@@ -172,17 +175,20 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		enemyBullets.move();
 		enemyShoots();
 		
-		checkForCollision();
-		
 		bulletTimer += GAME_PACE;
 		if (spacePressed && bulletTimer > bulletDelay) {
 			bulletTimer = 0;
 			playerBullets.shoot(player);
 		}
-		if (arrowPressed) {
+		if (arrowPressed) {	
 			player.move(lastArrowPressed);
 		}
-		winOrLose();
+		
+		checkForCollision();
+	
+		if(gameIsPlaying) {
+			winOrLose();
+		}
 	}		
 	
 	private void enemyShoots() {
@@ -306,12 +312,17 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * checks for a win or loss
 	 */
 	private void winOrLose() {
-		
+		int x = ducks.furthestDownPos();
+		int x2 = player.getY();
+		if (x>=x2)
+			System.out.print("Lose");
 		if(ducks.furthestDownPos() >= player.getY()) {
 			openLoseMenu();
+			
 		}
 		else if(ducks.emptyDucks()) {
 			openWinMenu();
+			
 		}
 	} 
 	
@@ -330,6 +341,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	private void openWinMenu() {
+		gameIsPlaying = false;
 		eraseAll();
 		JButton nextButton = new JButton("Start Next Level");
 		nextButton.setBounds(WIDTH/2-100, HEIGHT/2-50, 200, 100);
@@ -348,6 +360,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	}
 	
 	private void openLoseMenu() {
+		gameIsPlaying = false;
 		eraseAll();
 		JLabel loseMessage = new JLabel();
 		loseMessage.setText("GAME OVER");
@@ -393,6 +406,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		int startY = (int)(((double)9/10)*HEIGHT);
 		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY);
 		player.draw();
+		gameIsPlaying = true;
 		
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);
 		
