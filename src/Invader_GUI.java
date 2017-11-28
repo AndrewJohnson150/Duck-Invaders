@@ -369,6 +369,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private void openWinMenu() {
 		gameIsPlaying = false;
 		eraseAll();
+		play("WinLevel.wav");
 		JButton nextButton = new JButton("Start Next Level");
 		nextButton.setBounds(WIDTH/2-100, HEIGHT/2-50, 200, 100);
 		gameContentPane.add(nextButton);
@@ -388,6 +389,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private void openLoseMenu() {
 		gameIsPlaying = false;
 		eraseAll();
+		play("Lose.wav");
 		JLabel loseMessage = new JLabel();
 		loseMessage.setText("GAME OVER");
 		loseMessage.setBounds(WIDTH/2-60, HEIGHT/2-100, 200, 50);
@@ -433,6 +435,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		player = new Player(frame,startX,startY,1,PLAYER_VELOCITY);
 		player.draw();
 		gameIsPlaying = true;
+		
+		play("StartLevel.wav");
 		
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);
 		
