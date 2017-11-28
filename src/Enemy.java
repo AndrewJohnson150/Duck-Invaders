@@ -108,8 +108,10 @@ public class Enemy implements ItemInterface {
 	public void loseHealth() {
 		hitTimer = 8;
 		health--;
-		if(health == 0)
+		if(health == 0) {
 			dying = true;
+			Invader_GUI.play("EnemyDies.wav");
+		}
 	}
 	
 	public void setDirection(int d) {

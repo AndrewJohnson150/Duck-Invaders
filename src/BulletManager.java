@@ -10,20 +10,22 @@ public class BulletManager {
 	private int maxNumBullets;
 	private int numActiveBullets;
 	private String imageName;
-	
-	public BulletManager(JFrame passedInFrame, int screenHeight, int bVelocity, int MaxNumberOfBullets, String bulletImageName) {
+	private String soundFile;
+	public BulletManager(JFrame passedInFrame, int screenHeight, int bVelocity, int MaxNumberOfBullets, String bulletImageName, String sound) {
 		frame = passedInFrame;
 		bulletVelocity = bVelocity;
 		maxNumBullets = MaxNumberOfBullets;
 		numActiveBullets = 0;
 		bullets = new Bullet[MaxNumberOfBullets];
 		imageName = bulletImageName;
+		soundFile = sound;
 	}
 	
 	public void shoot(ItemInterface p) {
 		if (numActiveBullets<maxNumBullets) {
 			bullets[getEmptyBulletIndex()] = new Bullet(frame,p,bulletVelocity,imageName); 
 			numActiveBullets++;
+			Invader_GUI.play(soundFile);
 		}
 	}
 	

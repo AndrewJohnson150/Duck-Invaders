@@ -17,6 +17,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -83,6 +89,32 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	    g2.dispose();
 
 	    return resizedImg;
+	}
+	
+	//https://stackoverflow.com/questions/2416935/how-to-play-wav-files-wi%E2%80%8C%E2%80%8Bth-java
+	//sounds taken from https://www.sounds-resource.com/nes/duckhunt/sound/4233/
+	public static void play(String fileName) 
+	{
+		File file = new File("Sound/" + fileName);
+	    try
+	    {
+	        final Clip clip = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
+	        clip.addLineListener(new LineListener()
+	        {
+	            @Override
+	            public void update(LineEvent event)
+	            {
+	                if (event.getType() == LineEvent.Type.STOP)
+	                    clip.close();
+	            }
+	        });
+	        clip.open(AudioSystem.getAudioInputStream(file));
+	        clip.start();
+	    }
+	    catch (Exception exc)
+	    {
+	        exc.printStackTrace(System.out);
+	    }
 	}
 	
 	private int enemyTimer = ENEMY_TIMER;
@@ -404,8 +436,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);
 		
-		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets, "Images/bullet.png");
-		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets,"Images/bullet-hi.png");
+		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets, "Images/bullet.png", "PlayerShoots.wav");
+		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets,"Images/bullet-hi.png","EnemyShoots.wav");
 		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);
