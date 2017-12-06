@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.event.KeyEvent;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,8 +29,10 @@ public class Player implements ItemInterface {
 	    playerJFrame.getContentPane().add(playerJLabel);
 	    playerJLabel.setVisible(false);
 	    playerJLabel.setVisible(true);
-	    
-	    playerImage = new ImageIcon ("Images/playerImage.png");
+
+	    URL url = Enemy.class.getResource(
+                "/images/playerImage.png");
+	    playerImage = new ImageIcon (url);
 	    Image i = Invader_GUI.getScaledImage(playerImage.getImage(), 50, 50);
 	    playerImage = new ImageIcon(i);
 	}

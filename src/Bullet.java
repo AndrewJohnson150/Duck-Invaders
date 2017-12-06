@@ -1,4 +1,5 @@
 import java.awt.Image;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,7 +25,9 @@ public class Bullet implements ItemInterface {
 	    bulletJLabel.setVisible(false);
 	    bulletJLabel.setVisible(true);
 	    
-	    bulletImage = new ImageIcon(imageName);
+	    URL url = Enemy.class.getResource(
+                "/images/"+imageName);
+	    bulletImage = new ImageIcon(url);
 	    Image i = Invader_GUI.getScaledImage(bulletImage.getImage(), 10, 50);
 	    bulletImage = new ImageIcon(i);
 		xPos = p.getX()+p.imageWidth()/2 - imageWidth()/2;

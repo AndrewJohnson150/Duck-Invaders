@@ -10,14 +10,13 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.Line;
@@ -94,7 +93,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	//sounds taken from https://www.sounds-resource.com/nes/duckhunt/sound/4233/
 	public static void play(String fileName) 
 	{
-		File file = new File("Sound/" + fileName);
+		 URL url = Enemy.class.getResource(
+	                "/sounds/"+fileName);
 	    try
 	    {
 	        final Clip clip = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
@@ -107,7 +107,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	                    clip.close();
 	            }
 	        });
-	        clip.open(AudioSystem.getAudioInputStream(file));
+	        clip.open(AudioSystem.getAudioInputStream(url));
 	        clip.start();
 	    }
 	    catch (Exception exc)
@@ -176,7 +176,10 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	private void drawBackground(){ 
 		try {
-		    bckgrnd = ImageIO.read(new File("Images/background.png"));
+
+		    URL url = Enemy.class.getResource(
+	                "/images/background.png");
+		    bckgrnd = ImageIO.read(url);
 		} catch (IOException e) {
 		    e.printStackTrace();
 		}
@@ -437,8 +440,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		
 		ducks = new EnemyGroup(frame,startingRows*2, startingRows, enemyVelocity, enemyHealth);
 		
-		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets, "Images/bullet.png", "PlayerShoots.wav");
-		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets,"Images/bullet-hi.png","EnemyShoots.wav");
+		playerBullets = new BulletManager(frame,HEIGHT,BULLET_VELOCITY,numBullets, "bullet.png", "PlayerShoots.wav");
+		enemyBullets = new BulletManager(frame,Invader_GUI.HEIGHT,-1*Invader_GUI.BULLET_VELOCITY/2,numBullets,"bullet-hi.png","EnemyShoots.wav");
 		
 		gameTimer = new java.util.Timer();
 		gameTimer.schedule(this, 0, GAME_PACE);

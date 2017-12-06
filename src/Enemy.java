@@ -1,4 +1,5 @@
 import java.awt.Image;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -47,25 +48,33 @@ public class Enemy implements ItemInterface {
 	 */
 	private void setImage() {
 		if(health <= 0) {
-			enemyImage = new ImageIcon ("Images/falling.png"); //change
+			URL url = Enemy.class.getResource(
+                    "/images/falling.png");
+			enemyImage = new ImageIcon (url); //change
 		    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 		    enemyImage = new ImageIcon(i);
 		}
 		else {
 			if(hitTimer > 1) {
-	    		enemyImage = new ImageIcon ("Images/hit.png"); //change
+				URL url = Enemy.class.getResource(
+                        "/images/hit.png");
+	    		enemyImage = new ImageIcon (url); //change
 	    	    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 	    	    enemyImage = new ImageIcon(i);
 	    		hitTimer--;  
 	    	}
 			else {
 				if(direction == RIGHT) {
-				 	enemyImage = new ImageIcon ("Images/duck1.png"); //change
+					URL url = Enemy.class.getResource(
+                            "/images/duck1.png");
+				 	enemyImage = new ImageIcon (url); //change
 				    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 				    enemyImage = new ImageIcon(i);
 				}
 				else {
-					enemyImage = new ImageIcon ("Images/duck2.png"); //change
+					URL url = Enemy.class.getResource(
+                            "/images/duck2.png");
+					enemyImage = new ImageIcon (url); //change
 				    Image i = Invader_GUI.getScaledImage(enemyImage.getImage(), IMAGE_SIZE, IMAGE_SIZE);
 				    enemyImage = new ImageIcon(i);
 				}
