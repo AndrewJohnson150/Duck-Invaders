@@ -38,12 +38,13 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	public static final int RIGHT = 3;
 	public static final int WIDTH = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth();
 	public static final int HEIGHT = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-
+	
 	private static final int PLAYER_VELOCITY = WIDTH/200;
-	private static final int BULLET_VELOCITY = WIDTH/120;	
+	static final int BULLET_VELOCITY = WIDTH/120;	
 	private static final int ENEMY_TIMER = 10;	
 	private static final int ENEMY_VELOCITY = WIDTH/250;
 	private static final int GAME_PACE = 10;
+
 	private static final int gameWindowX = 0;
 	private static final int gameWindowY = 0;
 	
@@ -133,6 +134,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private int enemyHealth;
 	private int enemyVelocity;
 	private int startingRows;
+	
 	private int numBullets;
 	private int bulletDelay;	
 	
@@ -194,32 +196,31 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	 * called every tick of the timer. moves enemies, bullets, and checks for collisions.
 	 */
 	public void run() {
-		try {
-			enemyTimer += GAME_PACE;
-			if (enemyTimer > ENEMY_TIMER) {
-				enemyTimer = 0;
-				ducks.move();
-			}
-			
-			playerBullets.move();
-			enemyBullets.move();
-			enemyShoots();
-			
-			bulletTimer += GAME_PACE;
-			if (spacePressed && bulletTimer > bulletDelay) {
-				bulletTimer = 0;
-				playerBullets.shoot(player);
-			}
-			if (arrowPressed) {	
-				player.move(lastArrowPressed);
-			}
-			
-			checkForCollision();
+	
+		enemyTimer += GAME_PACE;
+		if (enemyTimer > ENEMY_TIMER) {
+			enemyTimer = 0;
+			ducks.move();
+		}
 		
-			if(gameIsPlaying) {
-				winOrLose();
-			}
-		} catch(NullPointerException ignore) {}
+		playerBullets.move();
+		enemyBullets.move();
+		enemyShoots();
+		
+		bulletTimer += GAME_PACE;
+		if (spacePressed && bulletTimer > bulletDelay) {
+			bulletTimer = 0;
+			playerBullets.shoot(player);
+		}
+		if (arrowPressed) {	
+			player.move(lastArrowPressed);
+		}
+		
+		checkForCollision();
+	
+		if(gameIsPlaying) {
+			winOrLose();
+		}
 	}		
 	
 	private void enemyShoots() {
@@ -231,16 +232,18 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	/**
 	 * checks for collision by creating a 2d array of ints that represents all the living ducks' 
-	 * locations. Do the same with players.
+	 * locations.
 	 * @see #playerBullets
 	 * @see #ducks
 	 */
 	public void checkForCollision() {
 		
 		List<int[][]> bulletLocations = playerBullets.bulletLocation();
+		
 		checkDuckCollision(bulletLocations);
 		
 		bulletLocations = enemyBullets.bulletLocation();
+		
 		checkPlayerCollision(bulletLocations);
 		
 	}    
