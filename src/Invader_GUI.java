@@ -379,9 +379,30 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		gameContentPane.add(nextButton);
 		nextButton.setVisible(true);
 		nextButton.requestFocus();
+		
 		nextButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				nextButton.setVisible(false);
+				synchronized(lock) {
+					lock.notifyAll();
+				}
+			}
+		});
+		
+		nextButton.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
 				nextButton.setVisible(false);
 				synchronized(lock) {
 					lock.notifyAll();
@@ -408,6 +429,28 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		gameContentPane.add(startNewButton);
 		startNewButton.setVisible(true);
 		startNewButton.requestFocus();
+		startNewButton.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				startNewButton.setVisible(false);
+				loseMessage.setVisible(false);
+				synchronized(lock) {
+					gameIsLost = true;
+					lock.notifyAll();
+				}
+			}
+		});
+		
 		startNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
