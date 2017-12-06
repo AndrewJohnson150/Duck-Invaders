@@ -140,7 +140,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	/**
 	 * sets up the GUI and starts the timer. Creates player and enemy manager as well.
-	 * @throws IOException 
+	 * @param rows number of rows of ducks
+	 * @param duckHealth how much health each duck has
+	 * @param duckVelocity how quick each duck moves
+	 * @param numberOfBullets number of player bullets that can be on screen at one time
+	 * @param firstTime if the game is first time this should be positive
 	 */
 	public Invader_GUI(int rows, int duckHealth, int duckVelocity, int numberOfBullets, boolean firstTime) {
 		enemyHealth = duckHealth;
