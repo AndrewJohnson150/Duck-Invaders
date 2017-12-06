@@ -418,7 +418,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 		gameTimer.cancel();
 		gameTimer.purge();
 		player.erase();
+		player = null;
+		playerBullets = null;
+		enemyBullets = null;
 		ducks.eraseDucks();
+		ducks = null;
 	}
 	
 	private void startGame() {
