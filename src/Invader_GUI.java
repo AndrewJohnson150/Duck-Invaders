@@ -28,8 +28,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Invader_GUI extends TimerTask implements KeyListener{
-	//private static final long serialVersionUID = 1L;
-	private Container gameContentPane;
 	
 	public static final int UP = 0;
 	public static final int DOWN = 1;
@@ -93,27 +91,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	//sounds taken from https://www.sounds-resource.com/nes/duckhunt/sound/4233/
 	public static void play(String fileName) 
 	{
-		 URL url = Enemy.class.getResource(
-	                "/sounds/"+fileName);
-	    try
-	    {
-	        final Clip clip = (Clip)AudioSystem.getLine(new Line.Info(Clip.class));
-	        clip.addLineListener(new LineListener()
-	        {
-	            @Override
-	            public void update(LineEvent event)
-	            {
-	                if (event.getType() == LineEvent.Type.STOP)
-	                    clip.close();
-	            }
-	        });
-	        clip.open(AudioSystem.getAudioInputStream(url));
-	        clip.start();
-	    }
-	    catch (Exception exc)
-	    {
-	        exc.printStackTrace(System.out);
-	    }
+		new SoundPlayer(fileName);
 	}
 	
 	private int enemyTimer = ENEMY_TIMER;
@@ -121,7 +99,8 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	private boolean spacePressed = false;
 	private boolean arrowPressed = false;
 	private KeyEvent lastArrowPressed = null;
-	
+
+	private Container gameContentPane;
 	private JFrame frame;
 	private Player player;
 	private EnemyGroup ducks;
@@ -273,30 +252,42 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 	
 	private void checkDuckCollision(List<int[][]> bulletLocations) {
 		if (bulletLocations.size()>0) {
-			//we can optimize by checking if bullet is in the bounds of the enemy group
-		
-			//make map
-			int[][] duckMap = ducks.getDuckMap();
-			for (int[][] bCorners : bulletLocations)
-				for (int[] bLocation : bCorners) {
-					int bulletX = bLocation[0];
-					int bulletY = bLocation[1];
-					if (bulletX < 0 || bulletY < 0) {
-						continue;
-					}
-					if (duckMap[bulletX][bulletY]!=0) {
-						int duckIndexX = 0;
-						int duckIndexY = 0;
-						
-						if (duckMap[bulletX][bulletY] != -1) { 
-							duckIndexX = duckMap[bulletX][bulletY]/1000;
-							duckIndexY = duckMap[bulletX][bulletY]%1000;
+			
+			// optimize by checking if bullet is above the lowest enemy before generating the duck map
+			boolean bulletAboveLowestDuck = false;
+			int lowestDuckY = ducks.furthestDownPos();
+			for (int[][] bCorners : bulletLocations) {
+					for (int[] bLocation : bCorners) {
+						int bulletY = bLocation[1];
+						if (bulletY <= lowestDuckY) {
+							bulletAboveLowestDuck = true;
 						}
-						ducks.registerCollision(duckIndexX,duckIndexY);
-						playerBullets.hitRegister(bulletX,bulletY);
-						break;
+					}
+			}
+			if (bulletAboveLowestDuck) {
+				int[][] duckMap = ducks.getDuckMap();
+				for (int[][] bCorners : bulletLocations) {
+					for (int[] bLocation : bCorners) {
+						int bulletX = bLocation[0];
+						int bulletY = bLocation[1];
+						if (bulletX < 0 || bulletY < 0) {
+							continue;
+						}
+						if (duckMap[bulletX][bulletY]!=0) {
+							int duckIndexX = 0;
+							int duckIndexY = 0;
+							
+							if (duckMap[bulletX][bulletY] != -1) { 
+								duckIndexX = duckMap[bulletX][bulletY]/1000;
+								duckIndexY = duckMap[bulletX][bulletY]%1000;
+							}
+							ducks.registerCollision(duckIndexX,duckIndexY);
+							playerBullets.hitRegister(bulletX,bulletY);
+							break;
+						}
 					}
 				}
+			}
 		}
 		
 	}
@@ -403,9 +394,11 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				nextButton.setVisible(false);
-				synchronized(lock) {
-					lock.notifyAll();
+				if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+					nextButton.setVisible(false);
+					synchronized(lock) {
+						lock.notifyAll();
+					}
 				}
 			}
 		});
@@ -442,11 +435,13 @@ public class Invader_GUI extends TimerTask implements KeyListener{
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				startNewButton.setVisible(false);
-				loseMessage.setVisible(false);
-				synchronized(lock) {
-					gameIsLost = true;
-					lock.notifyAll();
+				if (e.getKeyCode()==KeyEvent.VK_SPACE) {
+					startNewButton.setVisible(false);
+					loseMessage.setVisible(false);
+					synchronized(lock) {
+						gameIsLost = true;
+						lock.notifyAll();
+					}
 				}
 			}
 		});
