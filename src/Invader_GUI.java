@@ -148,6 +148,7 @@ public class Invader_GUI extends TimerTask implements KeyListener{
         
         frame.addKeyListener(this);
         frame.setResizable(false);
+        frame.setVisible(true);
         
 		if (firstTime) {
 			openStartMenu();
