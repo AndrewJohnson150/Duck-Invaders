@@ -1,7 +1,9 @@
-# CS230 - Duck Invaders Vision   
+# Duck Invaders Vision   
 Andrew Johnson and Torrey Hoff
 
 Welcome to Duck Invaders! You are a dog and your human has come down with bird flu, a result of the invading ducks you must hunt. Swarms of ducks will dive you as you attempt to shoot them from the sky and protect your human. Your goal is to eliminate the enemy and save your human. To win you must defeat many waves of enemies. Good luck hunter. Shoot straight. Shoot well.
+
+Download the Duck-Invaders.jar file and play now!
 
 # Road Map
 * One player with movement no shooting 
